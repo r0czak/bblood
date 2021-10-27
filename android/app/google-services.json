@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "325100618859",
+    "project_id": "bbold-33566",
+    "storage_bucket": "bbold-33566.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:325100618859:android:b6f5f82a01f5880c68dd2e",
+        "android_client_info": {
+          "package_name": "com.example.bblood"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "325100618859-rrqavb7uvmj83klj43f1g842c0ohjt4p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6OGCkcyGvM3VIWsTd-wuz7c9nBtWMR7Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "325100618859-rrqavb7uvmj83klj43f1g842c0ohjt4p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
