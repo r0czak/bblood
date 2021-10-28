@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '/front/menu_controller.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -10,7 +11,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController emailController = TextEditingController();
@@ -58,14 +58,11 @@ class _LoginScreenState extends State<LoginScreen> {
       child: MaterialButton(
         padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
         minWidth: MediaQuery.of(context).size.width,
-
         onPressed: () {
-          /*
           Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => MenuController())
           );
-           */
         },
         child: const Text(
           "Zaloguj",
