@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "325100618859-drajvagar7cp4s910v3ao1tj4sirs1me.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.bblood",
+            "certificate_hash": "6cf354ddf0e9e0d23bd04de7c4ce7310c9d3af6d"
+          }
+        },
+        {
           "client_id": "325100618859-rrqavb7uvmj83klj43f1g842c0ohjt4p.apps.googleusercontent.com",
           "client_type": 3
         }
