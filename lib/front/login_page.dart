@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '/front/menu_controller.dart';
+import '/front/registration_page.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -26,7 +27,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     //email input
     final emailInput = TextFormField(
-        autofocus: false,
+        //autofocus: false,
         controller: emailController,
         keyboardType: TextInputType.emailAddress,
         validator: (value){
@@ -59,6 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
             return("Please enter password!");
           }
           if (!RegExp(r'^.{6,}$').hasMatch(value)){
+            //Text returnText = new Text("Please enter valid password (min. 6 characters", style: TextStyle(color: Colors.white));
             return ("Please enter valid password (min. 6 characters)");
           }
           return null;
@@ -102,12 +104,10 @@ class _LoginScreenState extends State<LoginScreen> {
       child: MaterialButton(
         padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
         onPressed: () {
-          /*
           Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => RegistrationScreen())
           );
-           */
         },
         child: const Text(
           "Zarejestruj się",
@@ -179,9 +179,9 @@ class _LoginScreenState extends State<LoginScreen> {
         await _authentication
             .signInWithEmailAndPassword(email: email, password: password)
             .then((uid) => {
-          Fluttertoast.showToast(msg: "Login succesfull!"),
-          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MenuController()))
-        });
+              Fluttertoast.showToast(msg: "Login succesfull!"),
+              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MenuController()))
+            });
       } on FirebaseAuthException catch (error){
         switch (error.code){
           case "invalid-email":
