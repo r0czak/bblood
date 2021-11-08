@@ -1,8 +1,8 @@
+import 'package:bblood/front/menu_controller.dart';
+import 'package:bblood/front/registration_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import '/front/menu_controller.dart';
-import '/front/registration_page.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -14,7 +14,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  // editing text controllers for email and password
+  // editing text controllers for form fields
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
@@ -30,11 +30,12 @@ class _LoginScreenState extends State<LoginScreen> {
         //autofocus: false,
         controller: emailController,
         keyboardType: TextInputType.emailAddress,
-        validator: (value){
-          if (value!.isEmpty){
-            return("Please enter your email!");
+        validator: (value) {
+          if (value!.isEmpty) {
+            return ("Please enter your email!");
           }
-          if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]").hasMatch(value)){
+          if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
+              .hasMatch(value)) {
             return ("Please enter valid email");
           }
           return null;
@@ -55,11 +56,11 @@ class _LoginScreenState extends State<LoginScreen> {
         autofocus: false,
         controller: passwordController,
         obscureText: true,
-        validator: (value){
-          if (value!.isEmpty){
-            return("Please enter password!");
+        validator: (value) {
+          if (value!.isEmpty) {
+            return ("Please enter password!");
           }
-          if (!RegExp(r'^.{6,}$').hasMatch(value)){
+          if (!RegExp(r'^.{6,}$').hasMatch(value)) {
             //Text returnText = new Text("Please enter valid password (min. 6 characters", style: TextStyle(color: Colors.white));
             return ("Please enter valid password (min. 6 characters)");
           }
@@ -67,8 +68,8 @@ class _LoginScreenState extends State<LoginScreen> {
         },
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
-          prefixIcon: Icon(Icons.lock),
-          contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          prefixIcon: const Icon(Icons.lock),
+          contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Hasło",
           fillColor: Colors.white,
           filled: true,
@@ -80,9 +81,9 @@ class _LoginScreenState extends State<LoginScreen> {
     final loginButton = Material(
       elevation: 4,
       borderRadius: BorderRadius.circular(30),
-      color: Color(0xFFF0C631),
+      color: const Color(0xFFF0C631),
       child: MaterialButton(
-        padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+        padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
         minWidth: MediaQuery.of(context).size.width,
         onPressed: () {
           login(emailController.text, passwordController.text);
@@ -91,8 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
           "Zaloguj",
           textAlign: TextAlign.center,
           style: TextStyle(
-              fontSize: 22, color: Colors.black, fontWeight: FontWeight.bold
-          ),
+              fontSize: 22, color: Colors.black, fontWeight: FontWeight.bold),
         ),
       ),
     );
@@ -100,21 +100,20 @@ class _LoginScreenState extends State<LoginScreen> {
     final registerButton = Material(
       elevation: 4,
       borderRadius: BorderRadius.circular(30),
-      color: Color(0xFFF0C631),
+      color: const Color(0xFFF0C631),
       child: MaterialButton(
-        padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+        padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
         onPressed: () {
           Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => RegistrationScreen())
-          );
+              MaterialPageRoute(
+                  builder: (context) => const RegistrationScreen()));
         },
         child: const Text(
           "Zarejestruj się",
           textAlign: TextAlign.center,
           style: TextStyle(
-              fontSize: 15, color: Colors.black, fontWeight: FontWeight.bold
-          ),
+              fontSize: 15, color: Colors.black, fontWeight: FontWeight.bold),
         ),
       ),
     );
@@ -135,14 +134,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: <Widget>[
                     SizedBox(
                         height: 200,
-                        child: Image.asset("images/blood_logo.png",
-                          fit: BoxFit.contain,)
-                    ),
+                        child: Image.asset(
+                          "images/blood_logo.png",
+                          fit: BoxFit.contain,
+                        )),
                     const Text("Bbold",
                         //textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: 60,
-                            color: Colors.white)),
+                        style: TextStyle(fontSize: 60, color: Colors.white)),
                     const SizedBox(height: 30),
                     emailInput,
                     const SizedBox(height: 10),
@@ -152,15 +150,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(height: 10),
                     const Text("Zapomniałeś hasła? >",
                         textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.white)),
+                        style: TextStyle(fontSize: 14, color: Colors.white)),
                     const SizedBox(height: 70),
                     const Text("Chcesz zostać dawcą krwi?",
                         textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.white)),
+                        style: TextStyle(fontSize: 20, color: Colors.white)),
                     const SizedBox(height: 10),
                     registerButton,
                   ],
@@ -174,16 +168,17 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void login(String email, String password) async {
-    if (_formKey.currentState!.validate()){
+    if (_formKey.currentState!.validate()) {
       try {
         await _authentication
             .signInWithEmailAndPassword(email: email, password: password)
             .then((uid) => {
-              Fluttertoast.showToast(msg: "Login succesfull!"),
-              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MenuController()))
-            });
-      } on FirebaseAuthException catch (error){
-        switch (error.code){
+                  Fluttertoast.showToast(msg: "Login succesfull!"),
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (context) => const MenuController()))
+                });
+      } on FirebaseAuthException catch (error) {
+        switch (error.code) {
           case "invalid-email":
             errorMessage = "Invalid email.";
             break;
@@ -200,5 +195,4 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     }
   }
-
 }

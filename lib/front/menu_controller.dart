@@ -1,32 +1,37 @@
+import 'package:bblood/front/benefits_page.dart';
+import 'package:bblood/front/blood_card_page.dart';
+import 'package:bblood/front/home_page.dart';
+import 'package:bblood/front/map_page.dart';
+import 'package:bblood/front/research_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '/front/home_page.dart';
-import '/front/blood_card_page.dart';
-import '/front/research_page.dart';
-import '/front/map_page.dart';
-import '/front/benefits_page.dart';
-
 
 class MenuController extends StatefulWidget {
   const MenuController({Key? key}) : super(key: key);
 
   @override
-  _MenuControllerState  createState() => _MenuControllerState();
+  _MenuControllerState createState() => _MenuControllerState();
 }
 
-class _MenuControllerState extends State<MenuController>{
-
+class _MenuControllerState extends State<MenuController> {
   final PageController _pageController = PageController();
-  final List<Widget> _screen = [HomeScreen(), BloodCardScreen(), MapScreen(), BenefitsScreen(), ResearchScreen()];
+  final List<Widget> _screen = [
+    const HomeScreen(),
+    const BloodCardScreen(),
+    const MapScreen(),
+    const BenefitsScreen(),
+    const ResearchScreen()
+  ];
 
   int _selectedIndex = 0;
-  void _onPageChanged(int index){
+
+  void _onPageChanged(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
 
-  void _onItemTapped(int selectedIndex){
+  void _onItemTapped(int selectedIndex) {
     _pageController.jumpToPage(selectedIndex);
   }
 
@@ -50,7 +55,10 @@ class _MenuControllerState extends State<MenuController>{
             ),
             title: Text(
               "Główna",
-              style: TextStyle(fontSize: 11, color: _selectedIndex == 0 ? Colors.red : Colors.grey,),
+              style: TextStyle(
+                fontSize: 11,
+                color: _selectedIndex == 0 ? Colors.red : Colors.grey,
+              ),
             ),
           ),
           BottomNavigationBarItem(
@@ -60,7 +68,10 @@ class _MenuControllerState extends State<MenuController>{
             ),
             title: Text(
               "Krew",
-              style: TextStyle(fontSize: 11, color: _selectedIndex == 1 ? Colors.red : Colors.grey,),
+              style: TextStyle(
+                fontSize: 11,
+                color: _selectedIndex == 1 ? Colors.red : Colors.grey,
+              ),
             ),
           ),
           BottomNavigationBarItem(
@@ -70,7 +81,10 @@ class _MenuControllerState extends State<MenuController>{
             ),
             title: Text(
               "Punkty krwi",
-              style: TextStyle(fontSize: 11, color: _selectedIndex == 2 ? Colors.red : Colors.grey,),
+              style: TextStyle(
+                fontSize: 11,
+                color: _selectedIndex == 2 ? Colors.red : Colors.grey,
+              ),
             ),
           ),
           BottomNavigationBarItem(
@@ -80,7 +94,10 @@ class _MenuControllerState extends State<MenuController>{
             ),
             title: Text(
               "Zniżki",
-              style: TextStyle(fontSize: 11, color: _selectedIndex == 3 ? Colors.red : Colors.grey,),
+              style: TextStyle(
+                fontSize: 11,
+                color: _selectedIndex == 3 ? Colors.red : Colors.grey,
+              ),
             ),
           ),
           BottomNavigationBarItem(
@@ -90,7 +107,10 @@ class _MenuControllerState extends State<MenuController>{
             ),
             title: Text(
               "Badania",
-              style: TextStyle(fontSize: 11, color: _selectedIndex == 4 ? Colors.red : Colors.grey,),
+              style: TextStyle(
+                fontSize: 11,
+                color: _selectedIndex == 4 ? Colors.red : Colors.grey,
+              ),
             ),
           ),
         ],
