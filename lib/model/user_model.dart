@@ -1,5 +1,5 @@
 class UserModel {
-  String? userId;
+  String? uid;
   String? firstName;
   String? lastName;
   DateTime? birthday;
@@ -9,7 +9,7 @@ class UserModel {
   String? password;
 
   UserModel(
-      {this.userId,
+      {this.uid,
       this.firstName,
       this.lastName,
       this.birthday,
@@ -21,7 +21,7 @@ class UserModel {
   // receive data from the server
   factory UserModel.fromMap(map) {
     return UserModel(
-        userId: map['userId'],
+        uid: map['uid'],
         firstName: map['firstName'],
         lastName: map['lastName'],
         birthday: map['birthday'],
@@ -34,7 +34,7 @@ class UserModel {
   // send data to the server
   Map<String, dynamic> toMap() {
     return {
-      'userId': userId,
+      'uid': uid,
       'firstName': firstName,
       'lastName': lastName,
       'birthday': birthday,

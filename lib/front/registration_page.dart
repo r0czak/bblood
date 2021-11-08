@@ -1,6 +1,12 @@
+import 'package:bblood/model/user_model.dart';
 import 'package:bblood/utils/validation.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+
+import 'menu_controller.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({Key? key}) : super(key: key);
@@ -11,6 +17,8 @@ class RegistrationScreen extends StatefulWidget {
 
 class _RegistrationScreenState extends State<RegistrationScreen>
     with InputValidationMixin {
+  final _authentication = FirebaseAuth.instance;
+
   final _formKey = GlobalKey<FormState>();
 
   DateTime? _birthdayDate;
@@ -20,31 +28,15 @@ class _RegistrationScreenState extends State<RegistrationScreen>
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
 
-  // birthday controller
   final TextEditingController peselNumberController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController loginController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
+  String? errorMessage;
+
   @override
   Widget build(BuildContext context) {
-    final registerButton = Material(
-      elevation: 4,
-      borderRadius: BorderRadius.circular(30),
-      color: const Color(0xFFF0C631),
-      child: MaterialButton(
-        padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-        minWidth: MediaQuery.of(context).size.width,
-        onPressed: () {},
-        child: const Text(
-          "Zarejestruj",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-              fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold),
-        ),
-      ),
-    );
-
     final firstNameInput = TextFormField(
         //autofocus: false,
         controller: firstNameController,
@@ -102,6 +94,36 @@ class _RegistrationScreenState extends State<RegistrationScreen>
           prefixIcon: const Icon(Icons.person),
           contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Pesel",
+          fillColor: Colors.white,
+          filled: true,
+          border: OutlineInputBorder(
+            borderSide: BorderSide.none,
+            borderRadius: BorderRadius.circular(20),
+          ),
+        ));
+
+    final birthdayInput = TextFormField(
+        onTap: () {
+          // Below line stops keyboard from appearing
+          FocusScope.of(context).requestFocus(FocusNode());
+
+          showDatePicker(
+                  context: context,
+                  initialDate: DateTime.now(),
+                  firstDate: DateTime(1900),
+                  lastDate: DateTime(2022))
+              .then((date) {
+            setState(() {
+              _birthdayDate = date;
+            });
+          });
+        },
+        decoration: InputDecoration(
+          prefixIcon: const Icon(Icons.calendar_today),
+          contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+          hintText: _birthdayDate == null
+              ? "Data urodzenia"
+              : DateFormat("dd-MM-yyyy").format(_birthdayDate!).toString(),
           fillColor: Colors.white,
           filled: true,
           border: OutlineInputBorder(
@@ -173,35 +195,24 @@ class _RegistrationScreenState extends State<RegistrationScreen>
           ),
         ));
 
-    final birthdayInput = TextFormField(
-        onTap: () {
-          // Below line stops keyboard from appearing
-          FocusScope.of(context).requestFocus(new FocusNode());
-
-          showDatePicker(
-                  context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime(1900),
-                  lastDate: DateTime(2022))
-              .then((date) {
-            setState(() {
-              _birthdayDate = date;
-            });
-          });
+    final registerButton = Material(
+      elevation: 4,
+      borderRadius: BorderRadius.circular(30),
+      color: const Color(0xFFF0C631),
+      child: MaterialButton(
+        padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+        minWidth: MediaQuery.of(context).size.width,
+        onPressed: () {
+          signUp(emailController.text, passwordController.text);
         },
-        decoration: InputDecoration(
-          prefixIcon: const Icon(Icons.calendar_today),
-          contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-          hintText: _birthdayDate == null
-              ? "Data urodzenia"
-              : DateFormat("dd-MM-yyyy").format(_birthdayDate!).toString(),
-          fillColor: Colors.white,
-          filled: true,
-          border: OutlineInputBorder(
-            borderSide: BorderSide.none,
-            borderRadius: BorderRadius.circular(20),
-          ),
-        ));
+        child: const Text(
+          "Zarejestruj",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold),
+        ),
+      ),
+    );
 
     return Scaffold(
       //backgroundColor: const Color(0xFFDA4148),
@@ -253,5 +264,56 @@ class _RegistrationScreenState extends State<RegistrationScreen>
         ),
       ),
     );
+  }
+
+  void signUp(String email, String password) async {
+    if (_formKey.currentState!.validate()) {
+      try {
+        await _authentication
+            .createUserWithEmailAndPassword(email: email, password: password)
+            .then((uid) => {
+                  postDetailsToFirestore(),
+                  Fluttertoast.showToast(msg: "Signing in succesfull!"),
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (context) => const MenuController()))
+                });
+      } on FirebaseAuthException catch (error) {
+        switch (error.code) {
+          case "":
+            errorMessage = "Invalid email.";
+            break;
+          case "weak-password":
+            errorMessage = "Provided password is weak.";
+            break;
+          case "email-already-in-use":
+            errorMessage = "This e-mail is laready taken.";
+            break;
+          default:
+            errorMessage = "Undefined error.";
+        }
+        Fluttertoast.showToast(msg: errorMessage!);
+      }
+    }
+  }
+
+  postDetailsToFirestore() async {
+    FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+    User? user = _authentication.currentUser;
+
+    UserModel userModel = UserModel();
+
+    userModel.uid = user!.uid;
+    userModel.email = user.email;
+    userModel.firstName = firstNameController.text;
+    userModel.lastName = lastNameController.text;
+    userModel.peselNumber = peselNumberController.text;
+    userModel.login = loginController.text;
+    userModel.password = passwordController.text;
+    userModel.birthday = _birthdayDate;
+
+    await firebaseFirestore
+        .collection("users")
+        .doc(user.uid)
+        .set(userModel.toMap());
   }
 }
