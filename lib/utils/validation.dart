@@ -24,4 +24,11 @@ mixin InputValidationMixin {
     RegExp regex = RegExp(pattern);
     return regex.hasMatch(peselNumber);
   }
+
+  bool isLoginNameValid(String loginName) {
+    String pattern = r'^[a-zA-Z]\w*$';
+    RegExp regex = RegExp(pattern);
+    return regex.hasMatch(loginName) &&
+        (loginName.length <= 30 && loginName.length >= 5);
+  }
 }

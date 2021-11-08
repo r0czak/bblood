@@ -1,3 +1,4 @@
+import 'package:bblood/utils/validation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -8,7 +9,8 @@ class RegistrationScreen extends StatefulWidget {
   _RegistrationScreenState createState() => _RegistrationScreenState();
 }
 
-class _RegistrationScreenState extends State<RegistrationScreen> {
+class _RegistrationScreenState extends State<RegistrationScreen>
+    with InputValidationMixin {
   final _formKey = GlobalKey<FormState>();
 
   DateTime? _birthdayDate;
@@ -47,15 +49,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         //autofocus: false,
         controller: firstNameController,
         keyboardType: TextInputType.name,
-        validator: (value) {
-          if (value!.isEmpty) {
-            return ("Please enter your first name!");
-          }
-          if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
-              .hasMatch(value)) {
-            return ("Please enter valid email");
-          }
-          return null;
+        validator: (firstName) {
+          if (isNameValid(firstName!)) return null;
+          return ("Please enter your first name!");
         },
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
@@ -74,15 +70,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         //autofocus: false,
         controller: lastNameController,
         keyboardType: TextInputType.name,
-        validator: (value) {
-          if (value!.isEmpty) {
-            return ("Please enter your last name!");
-          }
-          if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
-              .hasMatch(value)) {
-            return ("Please enter valid email");
-          }
-          return null;
+        validator: (lastName) {
+          if (isNameValid(lastName!)) return null;
+          return ("Please enter your last name!");
         },
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
@@ -103,15 +93,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         //autofocus: false,
         controller: peselNumberController,
         keyboardType: TextInputType.number,
-        validator: (value) {
-          if (value!.isEmpty) {
-            return ("Please enter your pesel number!");
-          }
-          if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
-              .hasMatch(value)) {
-            return ("Please enter valid email");
-          }
-          return null;
+        validator: (peselNumber) {
+          if (isPeselNumberValid(peselNumber!)) return null;
+          return ("Please enter correct pesel number!");
         },
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
@@ -130,15 +114,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         //autofocus: false,
         controller: emailController,
         keyboardType: TextInputType.emailAddress,
-        validator: (value) {
-          if (value!.isEmpty) {
-            return ("Please enter your email!");
-          }
-          if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
-              .hasMatch(value)) {
-            return ("Please enter valid email");
-          }
-          return null;
+        validator: (email) {
+          if (isEmailValid(email!)) return null;
+          return ('Please enter valid e-mail');
         },
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
@@ -157,15 +135,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         //autofocus: false,
         controller: loginController,
         keyboardType: TextInputType.number,
-        validator: (value) {
-          if (value!.isEmpty) {
-            return ("Please enter your login!");
-          }
-          if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
-              .hasMatch(value)) {
-            return ("Please enter valid email");
-          }
-          return null;
+        validator: (login) {
+          if (isLoginNameValid(login!)) return null;
+          return ("Please enter correct login!");
         },
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
@@ -184,15 +156,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         autofocus: false,
         controller: passwordController,
         obscureText: true,
-        validator: (value) {
-          if (value!.isEmpty) {
-            return ("Please enter password!");
-          }
-          if (!RegExp(r'^.{6,}$').hasMatch(value)) {
-            //Text returnText = new Text("Please enter valid password (min. 6 characters", style: TextStyle(color: Colors.white));
-            return ("Please enter valid password (min. 6 characters)");
-          }
-          return null;
+        validator: (password) {
+          if (isPasswordValid(password!)) return null;
+          return ("Please enter valid password (min. 6 characters)");
         },
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
