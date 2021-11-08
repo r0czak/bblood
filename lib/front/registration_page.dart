@@ -1,5 +1,5 @@
-import 'package:bblood/widgets/input_field.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({Key? key}) : super(key: key);
@@ -10,6 +10,9 @@ class RegistrationScreen extends StatefulWidget {
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
   final _formKey = GlobalKey<FormState>();
+
+  DateTime? _birthdayDate;
+  DateFormat formatter = DateFormat('yyyy-MM-dd');
 
   // editing text controllers for form fields
   final TextEditingController firstNameController = TextEditingController();
@@ -204,27 +207,35 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           ),
         ));
 
-    // Tu ma byc date picker !!!!!!!!!!!!!!!!!!!
-    // final birthdayInput = TextFormField(
-    //   onTap: (){
-    //     // Below line stops keyboard from appearing
-    //     FocusScope.of(context).requestFocus(new FocusNode());
-    //
-    //     // Show Date Picker Here
-    //
-    //   },
-    //     decoration: InputDecoration(
-    //       prefixIcon: const Icon(Icons.lock),
-    //       contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-    //       hintText: "Hasło",
-    //       fillColor: Colors.white,
-    //       filled: true,
-    //       border: OutlineInputBorder(
-    //         borderSide: BorderSide.none,
-    //         borderRadius: BorderRadius.circular(20),
-    //       ),
-    //     ));
-    // );
+    final birthdayInput = TextFormField(
+        onTap: () {
+          // Below line stops keyboard from appearing
+          FocusScope.of(context).requestFocus(new FocusNode());
+
+          showDatePicker(
+                  context: context,
+                  initialDate: DateTime.now(),
+                  firstDate: DateTime(1900),
+                  lastDate: DateTime(2022))
+              .then((date) {
+            setState(() {
+              _birthdayDate = date;
+            });
+          });
+        },
+        decoration: InputDecoration(
+          prefixIcon: const Icon(Icons.calendar_today),
+          contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+          hintText: _birthdayDate == null
+              ? "Data urodzenia"
+              : DateFormat("dd-MM-yyyy").format(_birthdayDate!).toString(),
+          fillColor: Colors.white,
+          filled: true,
+          border: OutlineInputBorder(
+            borderSide: BorderSide.none,
+            borderRadius: BorderRadius.circular(20),
+          ),
+        ));
 
     return Scaffold(
       //backgroundColor: const Color(0xFFDA4148),
@@ -254,16 +265,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   const SizedBox(height: 10),
                   lastNameInput,
                   const SizedBox(height: 10),
-                  const TextFieldContainer(
-                      child: TextField(
-                    decoration: InputDecoration(
-                      icon: Icon(
-                        Icons.calendar_today,
-                      ),
-                      hintText: "Data urodzenia",
-                      border: InputBorder.none,
-                    ),
-                  )),
+                  birthdayInput,
                   const SizedBox(height: 10),
                   peselInput,
                   const SizedBox(height: 20),
