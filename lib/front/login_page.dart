@@ -4,6 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import '../utils/validation.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
@@ -11,7 +13,7 @@ class LoginScreen extends StatefulWidget {
   _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends State<LoginScreen> with InputValidationMixin {
   final _formKey = GlobalKey<FormState>();
 
   // editing text controllers for form fields
@@ -30,18 +32,13 @@ class _LoginScreenState extends State<LoginScreen> {
         //autofocus: false,
         controller: emailController,
         keyboardType: TextInputType.emailAddress,
-        validator: (value) {
-          if (value!.isEmpty) {
-            return ("Please enter your email!");
-          }
-          if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
-              .hasMatch(value)) {
-            return ("Please enter valid email");
-          }
-          return null;
+        validator: (email) {
+          if (isEmailValid(email!)) return null;
+          return ('Please enter valid e-mail');
         },
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
+          errorStyle: const TextStyle(color: Colors.yellow),
           prefixIcon: const Icon(Icons.email),
           contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Email lub login",
@@ -56,18 +53,13 @@ class _LoginScreenState extends State<LoginScreen> {
         autofocus: false,
         controller: passwordController,
         obscureText: true,
-        validator: (value) {
-          if (value!.isEmpty) {
-            return ("Please enter password!");
-          }
-          if (!RegExp(r'^.{6,}$').hasMatch(value)) {
-            //Text returnText = new Text("Please enter valid password (min. 6 characters", style: TextStyle(color: Colors.white));
-            return ("Please enter valid password (min. 6 characters)");
-          }
-          return null;
+        validator: (password) {
+          if (isPasswordValid(password!)) return null;
+          return ("Please enter valid password (min. 6 characters)");
         },
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
+          errorStyle: const TextStyle(color: Colors.yellow),
           prefixIcon: const Icon(Icons.lock),
           contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Hasło",
