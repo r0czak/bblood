@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:bblood/front/user_profile_page.dart';
 
 class BloodCardScreen extends StatefulWidget {
   const BloodCardScreen({Key? key}) : super(key: key);
@@ -16,10 +17,6 @@ class _BloodCardScreenState extends State<BloodCardScreen> {
     return Scaffold(
       //backgroundColor: const Color(0xFFDA4148),
       backgroundColor: const Color(0xFFEDEDED),
-      appBar: AppBar(
-        title: const Text("Bbold"),
-        automaticallyImplyLeading: false,
-      ),
       body: Center(
         child: SingleChildScrollView(
           child: Container(

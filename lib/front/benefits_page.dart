@@ -16,10 +16,6 @@ class _BenefitsScreenState extends State<BenefitsScreen> {
     return Scaffold(
       //backgroundColor: const Color(0xFFDA4148),
       backgroundColor: const Color(0xFFEDEDED),
-      appBar: AppBar(
-        title: const Text("Bbold"),
-        automaticallyImplyLeading: false,
-      ),
       body: Center(
         child: SingleChildScrollView(
           child: Container(
