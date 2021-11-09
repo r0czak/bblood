@@ -28,7 +28,6 @@ class _RegistrationScreenState extends State<RegistrationScreen>
   final TextEditingController peselNumberController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
 
-  // final TextEditingController loginController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
   String? errorMessage;
@@ -155,27 +154,6 @@ class _RegistrationScreenState extends State<RegistrationScreen>
           ),
         ));
 
-    // final loginInput = TextFormField(
-    //     //autofocus: false,
-    //     controller: loginController,
-    //     keyboardType: TextInputType.number,
-    //     validator: (login) {
-    //       if (isLoginNameValid(login!)) return null;
-    //       return ("Please enter correct login!");
-    //     },
-    //     textInputAction: TextInputAction.next,
-    //     decoration: InputDecoration(
-    //       prefixIcon: const Icon(Icons.person),
-    //       contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-    //       hintText: "Login",
-    //       fillColor: Colors.white,
-    //       filled: true,
-    //       border: OutlineInputBorder(
-    //         borderSide: BorderSide.none,
-    //         borderRadius: BorderRadius.circular(20),
-    //       ),
-    //     ));
-
     final passwordInput = TextFormField(
         autofocus: false,
         controller: passwordController,
@@ -290,55 +268,4 @@ class _RegistrationScreenState extends State<RegistrationScreen>
       ),
     );
   }
-
-// void signUp(String email, String password) async {
-// if (_formKey.currentState!.validate()) {
-// try {
-// await _authentication
-//     .createUserWithEmailAndPassword(email: email, password: password)
-//     .then((uid) => {
-// //postDetailsToFirestore(),
-// Fluttertoast.showToast(msg: "Signing in succesfull!"),
-// Navigator.of(context).pushReplacement(MaterialPageRoute(
-// builder: (context) => const MenuController()))
-// });
-// } on FirebaseAuthException catch (error) {
-// switch (error.code) {
-// case "":
-// errorMessage = "Invalid email.";
-// break;
-// case "weak-password":
-// errorMessage = "Provided password is weak.";
-// break;
-// case "email-already-in-use":
-// errorMessage = "This e-mail is laready taken.";
-// break;
-// default:
-// errorMessage = "Undefined error.";
-// }
-// Fluttertoast.showToast(msg: errorMessage!);
-// }
-// }
-// }
-
-// postDetailsToFirestore() async {
-//   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-//   User? user = _authentication.currentUser;
-//
-//   UserInfoModel userModel = UserModel();
-//
-//   userModel.uid = user!.uid;
-//   userModel.email = user.email;
-//   userModel.firstName = firstNameController.text;
-//   userModel.lastName = lastNameController.text;
-//   userModel.peselNumber = peselNumberController.text;
-//   userModel.login = loginController.text;
-//   userModel.password = passwordController.text;
-//   userModel.birthday = _birthdayDate;
-//
-//   await firebaseFirestore
-//       .collection("users")
-//       .doc(user.uid)
-//       .set(userModel.toMap());
-// }
 }
