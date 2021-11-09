@@ -32,7 +32,7 @@ class _LoginScreenState extends State<LoginScreen> with InputValidationMixin {
         keyboardType: TextInputType.emailAddress,
         validator: (email) {
           if (isEmailValid(email!)) return null;
-          return ('Please enter valid e-mail');
+          return ('Wprowadź poprawny email');
         },
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
@@ -53,7 +53,7 @@ class _LoginScreenState extends State<LoginScreen> with InputValidationMixin {
         obscureText: true,
         validator: (password) {
           if (isPasswordValid(password!)) return null;
-          return ("Please enter valid password (min. 6 characters)");
+          return ("Wprowadź poprawne hasło (min. 6 znaków).");
         },
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
@@ -145,14 +145,19 @@ class _LoginScreenState extends State<LoginScreen> with InputValidationMixin {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     SizedBox(
-                        height: 200,
+                        height: 250,
                         child: Image.asset(
                           "images/blood_logo.png",
                           fit: BoxFit.contain,
                         )),
-                    const Text("Bbold",
-                        //textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 60, color: Colors.white)),
+                    /*const Text("Bbold",
+                        style: TextStyle(fontSize: 60, color: Colors.white)),*/
+                    SizedBox(
+                        height: 70,
+                        child: Image.asset(
+                          "images/app_name.png",
+                          fit: BoxFit.contain,
+                        )),
                     const SizedBox(height: 30),
                     emailInput,
                     const SizedBox(height: 10),
