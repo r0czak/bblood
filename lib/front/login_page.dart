@@ -1,9 +1,9 @@
-import 'package:bblood/front/menu_controller.dart';
-import 'package:bblood/front/registration_page.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 
+import '../services/auth_service.dart';
 import '../utils/validation.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -20,14 +20,12 @@ class _LoginScreenState extends State<LoginScreen> with InputValidationMixin {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  // firebase authentication
-  final _authentication = FirebaseAuth.instance;
-
-  String? errorMessage;
-
   @override
   Widget build(BuildContext context) {
-    //email input
+    // firebase authentication
+    final authService = Provider.of<AuthService>(context);
+
+    // TextFormField setup
     final emailInput = TextFormField(
         //autofocus: false,
         controller: emailController,
@@ -77,8 +75,33 @@ class _LoginScreenState extends State<LoginScreen> with InputValidationMixin {
       child: MaterialButton(
         padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
         minWidth: MediaQuery.of(context).size.width,
-        onPressed: () {
-          login(emailController.text, passwordController.text);
+        onPressed: () async {
+          if (_formKey.currentState!.validate()) {
+            try {
+              await authService.signInWithEmailAndPassword(
+                  emailController.text, passwordController.text);
+              Fluttertoast.showToast(msg: "Signing in succesfull!");
+            } on auth.FirebaseAuthException catch (error) {
+              String? errorMessage;
+              switch (error.code) {
+                case "invalid-email":
+                  errorMessage = "Invalid email.";
+                  break;
+                case "user-disabled":
+                  errorMessage = "User has been disabled.";
+                  break;
+                case "user-not-found":
+                  errorMessage = "User with this email doesn't exist.";
+                  break;
+                case "wrong-password":
+                  errorMessage = "Wrong password";
+                  break;
+                default:
+                  errorMessage = "Undefined error.";
+              }
+              Fluttertoast.showToast(msg: errorMessage);
+            }
+          }
         },
         child: const Text(
           "Zaloguj",
@@ -96,10 +119,7 @@ class _LoginScreenState extends State<LoginScreen> with InputValidationMixin {
       child: MaterialButton(
         padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
         onPressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const RegistrationScreen()));
+          Navigator.pushNamed(context, '/register');
         },
         child: const Text(
           "Zarejestruj się",
@@ -157,34 +177,5 @@ class _LoginScreenState extends State<LoginScreen> with InputValidationMixin {
         ),
       ),
     );
-  }
-
-  void login(String email, String password) async {
-    if (_formKey.currentState!.validate()) {
-      try {
-        await _authentication
-            .signInWithEmailAndPassword(email: email, password: password)
-            .then((uid) => {
-                  Fluttertoast.showToast(msg: "Login succesfull!"),
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => const MenuController()))
-                });
-      } on FirebaseAuthException catch (error) {
-        switch (error.code) {
-          case "invalid-email":
-            errorMessage = "Invalid email.";
-            break;
-          case "wrong-password":
-            errorMessage = "Invalid password.";
-            break;
-          case "user-not-found":
-            errorMessage = "User doesn't exist.";
-            break;
-          default:
-            errorMessage = "Undefined error.";
-        }
-        Fluttertoast.showToast(msg: errorMessage!);
-      }
-    }
   }
 }
