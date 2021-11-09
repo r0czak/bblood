@@ -1,12 +1,11 @@
-import 'package:bblood/model/user_model.dart';
 import 'package:bblood/utils/validation.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
-import 'menu_controller.dart';
+import '../services/auth_service.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({Key? key}) : super(key: key);
@@ -17,8 +16,6 @@ class RegistrationScreen extends StatefulWidget {
 
 class _RegistrationScreenState extends State<RegistrationScreen>
     with InputValidationMixin {
-  final _authentication = FirebaseAuth.instance;
-
   final _formKey = GlobalKey<FormState>();
 
   DateTime? _birthdayDate;
@@ -30,13 +27,17 @@ class _RegistrationScreenState extends State<RegistrationScreen>
 
   final TextEditingController peselNumberController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
-  final TextEditingController loginController = TextEditingController();
+
   final TextEditingController passwordController = TextEditingController();
 
   String? errorMessage;
 
   @override
   Widget build(BuildContext context) {
+    // firebase authentication
+    final authService = Provider.of<AuthService>(context);
+
+    // TextFormField setup
     final firstNameInput = TextFormField(
         //autofocus: false,
         controller: firstNameController,
@@ -153,27 +154,6 @@ class _RegistrationScreenState extends State<RegistrationScreen>
           ),
         ));
 
-    final loginInput = TextFormField(
-        //autofocus: false,
-        controller: loginController,
-        keyboardType: TextInputType.number,
-        validator: (login) {
-          if (isLoginNameValid(login!)) return null;
-          return ("Please enter correct login!");
-        },
-        textInputAction: TextInputAction.next,
-        decoration: InputDecoration(
-          prefixIcon: const Icon(Icons.person),
-          contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-          hintText: "Login",
-          fillColor: Colors.white,
-          filled: true,
-          border: OutlineInputBorder(
-            borderSide: BorderSide.none,
-            borderRadius: BorderRadius.circular(20),
-          ),
-        ));
-
     final passwordInput = TextFormField(
         autofocus: false,
         controller: passwordController,
@@ -202,8 +182,31 @@ class _RegistrationScreenState extends State<RegistrationScreen>
       child: MaterialButton(
         padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
         minWidth: MediaQuery.of(context).size.width,
-        onPressed: () {
-          signUp(emailController.text, passwordController.text);
+        onPressed: () async {
+          if (_formKey.currentState!.validate()) {
+            try {
+              await authService.createUserWithEmailAndPassword(
+                  emailController.text, passwordController.text);
+              Fluttertoast.showToast(msg: "Signing up succesfull!");
+              Navigator.pushNamed(context, '/');
+            } on auth.FirebaseAuthException catch (error) {
+              String? errorMessage;
+              switch (error.code) {
+                case "invalid-email":
+                  errorMessage = "Invalid email.";
+                  break;
+                case "email-already-in-use":
+                  errorMessage = "User is already registered";
+                  break;
+                case "weak-password":
+                  errorMessage = "Weak password";
+                  break;
+                default:
+                  errorMessage = "Undefined error.";
+              }
+              Fluttertoast.showToast(msg: errorMessage);
+            }
+          }
         },
         child: const Text(
           "Zarejestruj",
@@ -251,8 +254,8 @@ class _RegistrationScreenState extends State<RegistrationScreen>
                       style: TextStyle(fontSize: 15, color: Colors.red)),
                   const SizedBox(height: 10),
                   emailInput,
-                  const SizedBox(height: 10),
-                  loginInput,
+                  // const SizedBox(height: 10),
+                  // loginInput,
                   const SizedBox(height: 10),
                   passwordInput,
                   const SizedBox(height: 30),
@@ -264,56 +267,5 @@ class _RegistrationScreenState extends State<RegistrationScreen>
         ),
       ),
     );
-  }
-
-  void signUp(String email, String password) async {
-    if (_formKey.currentState!.validate()) {
-      try {
-        await _authentication
-            .createUserWithEmailAndPassword(email: email, password: password)
-            .then((uid) => {
-                  postDetailsToFirestore(),
-                  Fluttertoast.showToast(msg: "Signing in succesfull!"),
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => const MenuController()))
-                });
-      } on FirebaseAuthException catch (error) {
-        switch (error.code) {
-          case "":
-            errorMessage = "Invalid email.";
-            break;
-          case "weak-password":
-            errorMessage = "Provided password is weak.";
-            break;
-          case "email-already-in-use":
-            errorMessage = "This e-mail is laready taken.";
-            break;
-          default:
-            errorMessage = "Undefined error.";
-        }
-        Fluttertoast.showToast(msg: errorMessage!);
-      }
-    }
-  }
-
-  postDetailsToFirestore() async {
-    FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-    User? user = _authentication.currentUser;
-
-    UserModel userModel = UserModel();
-
-    userModel.uid = user!.uid;
-    userModel.email = user.email;
-    userModel.firstName = firstNameController.text;
-    userModel.lastName = lastNameController.text;
-    userModel.peselNumber = peselNumberController.text;
-    userModel.login = loginController.text;
-    userModel.password = passwordController.text;
-    userModel.birthday = _birthdayDate;
-
-    await firebaseFirestore
-        .collection("users")
-        .doc(user.uid)
-        .set(userModel.toMap());
   }
 }

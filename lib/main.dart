@@ -1,6 +1,9 @@
+import 'package:bblood/services/auth_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'front/login_page.dart';
+import 'package:provider/provider.dart';
+
+import 'utils/router.dart' as rt;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,12 +18,19 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.red,
-      ),
-      home: LoginScreen(),
-    );
+    return MultiProvider(
+        providers: [
+          Provider<AuthService>(
+            create: (_) => AuthService(),
+          ),
+        ],
+        child: MaterialApp(
+          title: 'Bbold',
+          theme: ThemeData(
+            primarySwatch: Colors.red,
+          ),
+          onGenerateRoute: rt.Router.generateRoute,
+          initialRoute: '/',
+        ));
   }
 }
