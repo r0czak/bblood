@@ -101,7 +101,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                   'https://webstockreview.net/images/male-clipart-professional-man-3.jpg'),
                             ),
                             Text(
-                              "123",
+                              "Jan Kowalski",
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
