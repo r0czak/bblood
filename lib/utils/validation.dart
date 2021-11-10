@@ -16,7 +16,9 @@ mixin InputValidationMixin {
   bool isNameValid(String name) {
     //String pattern = r"^([a-z]+[,.]?[ ]?|[a-z]+['-]?)+$";
     //RegExp regex = RegExp(pattern);
-    return name.length <= 30;
+    String pattern = r"^[a-zA-ZàáâäąčćęèéêłńòóôöõøżźñçčšžĄĆČĘÈÉÊËŁŃÒÓŻŹČŠŽ ,.'-]+$";
+    RegExp regex = RegExp(pattern);
+    return (name.length <= 30 && name.length >= 3) && regex.hasMatch(name);
   }
 
   bool isPeselNumberValid(String peselNumber) {

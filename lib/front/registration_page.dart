@@ -44,14 +44,14 @@ class _RegistrationScreenState extends State<RegistrationScreen>
         keyboardType: TextInputType.name,
         validator: (firstName) {
           if (isNameValid(firstName!)) return null;
-          return ("Please enter your first name!");
+          return ("Wprowadź poprawne imię.");
         },
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
           prefixIcon: const Icon(Icons.person),
           contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Imię",
-          fillColor: Colors.white,
+          fillColor: Colors.white.withOpacity(0.8),
           filled: true,
           border: OutlineInputBorder(
             borderSide: BorderSide.none,
@@ -65,14 +65,14 @@ class _RegistrationScreenState extends State<RegistrationScreen>
         keyboardType: TextInputType.name,
         validator: (lastName) {
           if (isNameValid(lastName!)) return null;
-          return ("Please enter your last name!");
+          return ("Wprowadź poprawne nazwisko.");
         },
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
           prefixIcon: const Icon(Icons.person),
           contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Nazwisko",
-          fillColor: Colors.white,
+          fillColor: Colors.white.withOpacity(0.8),
           filled: true,
           border: OutlineInputBorder(
             borderSide: BorderSide.none,
@@ -88,14 +88,14 @@ class _RegistrationScreenState extends State<RegistrationScreen>
         keyboardType: TextInputType.number,
         validator: (peselNumber) {
           if (isPeselNumberValid(peselNumber!)) return null;
-          return ("Please enter correct pesel number!");
+          return ("Wprowadź poprawny numer pesel.");
         },
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
           prefixIcon: const Icon(Icons.person),
           contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Pesel",
-          fillColor: Colors.white,
+          fillColor: Colors.white.withOpacity(0.8),
           filled: true,
           border: OutlineInputBorder(
             borderSide: BorderSide.none,
@@ -119,13 +119,17 @@ class _RegistrationScreenState extends State<RegistrationScreen>
             });
           });
         },
+        validator: (value) {
+          if (value!.isNotEmpty) return null;
+          return ('Wprowadź datę urodzenia.');
+        },
         decoration: InputDecoration(
           prefixIcon: const Icon(Icons.calendar_today),
           contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: _birthdayDate == null
               ? "Data urodzenia"
               : DateFormat("dd-MM-yyyy").format(_birthdayDate!).toString(),
-          fillColor: Colors.white,
+          fillColor: Colors.white.withOpacity(0.8),
           filled: true,
           border: OutlineInputBorder(
             borderSide: BorderSide.none,
@@ -139,14 +143,14 @@ class _RegistrationScreenState extends State<RegistrationScreen>
         keyboardType: TextInputType.emailAddress,
         validator: (email) {
           if (isEmailValid(email!)) return null;
-          return ('Please enter valid e-mail');
+          return ('Wprowadź poprawny adres e-mail.');
         },
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
           prefixIcon: const Icon(Icons.email),
           contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "E-mail",
-          fillColor: Colors.white,
+          fillColor: Colors.white.withOpacity(0.8),
           filled: true,
           border: OutlineInputBorder(
             borderSide: BorderSide.none,
@@ -160,14 +164,14 @@ class _RegistrationScreenState extends State<RegistrationScreen>
         obscureText: true,
         validator: (password) {
           if (isPasswordValid(password!)) return null;
-          return ("Please enter valid password (min. 6 characters)");
+          return ("Wprowadź poprawne hasło (min. 6 znaków)");
         },
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
           prefixIcon: const Icon(Icons.lock),
           contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Hasło",
-          fillColor: Colors.white,
+          fillColor: Colors.white.withOpacity(0.8),
           filled: true,
           border: OutlineInputBorder(
             borderSide: BorderSide.none,
@@ -187,32 +191,32 @@ class _RegistrationScreenState extends State<RegistrationScreen>
             try {
               await authService.createUserWithEmailAndPassword(
                   emailController.text, passwordController.text);
-              Fluttertoast.showToast(msg: "Signing up succesfull!");
+              Fluttertoast.showToast(msg: "Zarejestrowano pomyślnie!");
               Navigator.pushNamed(context, '/');
             } on auth.FirebaseAuthException catch (error) {
               String? errorMessage;
               switch (error.code) {
                 case "invalid-email":
-                  errorMessage = "Invalid email.";
+                  errorMessage = "Niepoprawny e-mail.";
                   break;
                 case "email-already-in-use":
-                  errorMessage = "User is already registered";
+                  errorMessage = "Adres e-mail już jest w użyciu.";
                   break;
                 case "weak-password":
-                  errorMessage = "Weak password";
+                  errorMessage = "Ustaw silniejsze hasło.";
                   break;
                 default:
-                  errorMessage = "Undefined error.";
+                  errorMessage = "Błąd";
               }
               Fluttertoast.showToast(msg: errorMessage);
             }
           }
         },
         child: const Text(
-          "Zarejestruj",
+          "Utwórz konto dawcy",
           textAlign: TextAlign.center,
           style: TextStyle(
-              fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold),
+              fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold),
         ),
       ),
     );
@@ -222,12 +226,18 @@ class _RegistrationScreenState extends State<RegistrationScreen>
       backgroundColor: const Color(0xFFEDEDED),
       appBar: AppBar(
         title: const Text("Bbold"),
+        backgroundColor: Color(0xFFDA4148),
       ),
       body: Center(
         child: SingleChildScrollView(
           child: Container(
-            color: const Color(0xFFEDEDED),
-            //color: Colors.red,
+            //color: const Color(0xFFEDEDED),
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('images/blood_logo_2reg.png'),
+                colorFilter: ColorFilter.mode(Color(0xFFEDEDED).withOpacity(0.6), BlendMode.srcOver),
+              ),
+            ),
             child: Padding(
               padding: const EdgeInsets.all(45.0),
               child: Form(
@@ -235,7 +245,7 @@ class _RegistrationScreenState extends State<RegistrationScreen>
                 child: Column(children: <Widget>[
                   const Text("Rejestracja",
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 30, color: Colors.red)),
+                      style: TextStyle(fontSize: 30, color: Colors.red, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 20),
                   const Text("Dane osobowe",
                       textAlign: TextAlign.left,

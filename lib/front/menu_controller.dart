@@ -38,6 +38,27 @@ class _MenuControllerState extends State<MenuController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Text("BeBold App"),
+        automaticallyImplyLeading: false,
+        backgroundColor: Color(0xFFDA4148),
+        actions: <Widget>[
+          Padding(
+              padding: EdgeInsets.only(right: 20.0),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, '/profile');
+                },
+                child: const Icon(
+                  Icons.person_outline,
+                  color: Colors.white,
+                  size: 35.0,
+                ),
+              )
+          ),
+        ],
+      ),
       body: PageView(
         controller: _pageController,
         children: _screen,

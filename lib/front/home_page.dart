@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:bblood/front/user_profile_page.dart';
 
 import '../services/auth_service.dart';
 
@@ -15,36 +17,34 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final authService = Provider.of<AuthService>(context);
     return Scaffold(
       //backgroundColor: const Color(0xFFDA4148),
       backgroundColor: const Color(0xFFEDEDED),
-      appBar: AppBar(
-        title: const Text("Bbold"),
-        automaticallyImplyLeading: false,
-      ),
       body: Center(
-        child: SingleChildScrollView(
-          child: Container(
-            color: const Color(0xFFEDEDED),
-            child: Padding(
-              padding: const EdgeInsets.all(45.0),
-              child: Form(
-                key: _formKey,
+          child: Stack(
+            children: [
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
                 child: Column(children: <Widget>[
-                  Text("Menu główne"),
-                  ElevatedButton(
-                    child: const Text('Logout'),
-                    onPressed: () async {
-                      await authService.signOut();
-                    },
-                  ),
+                  SizedBox(
+                      height: 200,
+                      child: Image.asset(
+                        "images/panel1.png",
+                        fit: BoxFit.contain,
+                      )),
+                  SizedBox(
+                      height: 300,
+                      child: Image.asset(
+                        "images/panel2.png",
+                        fit: BoxFit.contain,
+                      )),
                 ]),
               ),
-            ),
+            ],
           ),
         ),
-      ),
     );
   }
 }
