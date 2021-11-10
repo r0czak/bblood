@@ -39,7 +39,8 @@ class _MenuControllerState extends State<MenuController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Bbold"),
+        centerTitle: true,
+        title: const Text("BeBold App"),
         automaticallyImplyLeading: false,
         backgroundColor: Color(0xFFDA4148),
         actions: <Widget>[

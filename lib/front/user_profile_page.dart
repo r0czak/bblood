@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../front/honory_card_page.dart';
 
 import '../services/auth_service.dart';
 
@@ -16,11 +17,10 @@ class UserProfileScreen extends StatefulWidget {
 
 class _UserProfileScreenState extends State<UserProfileScreen> {
   final _formKey = GlobalKey<FormState>();
-
+  /*
   User? user = FirebaseAuth.instance.currentUser;
   UserInfoModel userData = UserInfoModel();
 
-  /*
   @override
   void initState(){
     super.initState();
@@ -33,9 +33,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         setState(() {});
       });
   }
-
    */
-
+  var _toggled = true;
+  var _toggled2 = true;
   @override
   Widget build(BuildContext context) {
     final authService = Provider.of<AuthService>(context);
@@ -46,7 +46,12 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       color: const Color(0xFFDA4148),
       child: MaterialButton(
         padding: const EdgeInsets.fromLTRB(40, 40, 40, 40),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => HonoryCardScreen()),
+          );
+        },
         child: const Text(
           "Karta honorowego dawcy krwi",
           textAlign: TextAlign.center,
@@ -56,11 +61,31 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       ),
     );
 
+    final logoutButton = Material(
+      elevation: 4,
+      borderRadius: BorderRadius.circular(10),
+      color: const Color(0xFFDA4148),
+      child: MaterialButton(
+        padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
+        onPressed: () async {
+              await authService.signOut();
+              Navigator.pushNamed(context, '/');
+        },
+        child: const Text(
+          "Wyloguj",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontSize: 16, color: Colors.white),
+        ),
+      ),
+    );
+
     return Scaffold(
       //backgroundColor: const Color(0xFFDA4148),
       backgroundColor: const Color(0xFFEDEDED),
       appBar: AppBar(
-        title: const Text("Bbold"),
+        centerTitle: true,
+        title: const Text("Profil dawcy"),
         backgroundColor: Color(0xFFDA4148),
         actions: <Widget>[
           Padding(
@@ -76,55 +101,87 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           ),
         ],
       ),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Container(
-            margin: const EdgeInsets.all(10.0),
-            color: const Color(0xFFEDEDED),
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Text("Profil użytkownika"),
-                  Card(
-                    color: Colors.grey[300],
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-                        height: 200,
-                        width: 400,
-                        child:  Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const CircleAvatar(
-                              radius: 70, //we give the image a radius of 50
-                              backgroundImage: NetworkImage(
-                                  'https://webstockreview.net/images/male-clipart-professional-man-3.jpg'),
-                            ),
-                            Text(
-                              "Jan Kowalski",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(height: 5),
-                          ],
-                        ),
-                      ),
-                  ),
-                  SizedBox(height: 100),
-                  honorCard,
-                  SizedBox(height: 100),
-                  ElevatedButton(
-                    child: const Text('Wyloguj'),
-                    onPressed: () async {
-                      await authService.signOut();
-                      Navigator.pushNamed(context, '/');
-                    },
-                  ),
-                ]),
-          ),
-        ),
+      body: SingleChildScrollView(
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              const Card(
+                elevation: 7,
+                margin: const EdgeInsets.all(15),
+                child: ListTile(
+                  title: Text("Jan Kowalski", style: TextStyle(
+                      fontSize: 24)),
+                  trailing: Icon(Icons.edit),
+                ),
+              ),
+              honorCard,
+              SizedBox(height: 25),
+              Text("Ustawienia"),
+              Card(
+                elevation: 4,
+                margin: const EdgeInsets.fromLTRB(15, 10, 15, 10),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                child: Column(
+                  children: <Widget>[
+                    ListTile(
+                      leading: Icon(Icons.person, color: Color(0xFFDA4148)),
+                      title: Text("Dane szczegółowe dawcy"),
+                      trailing: Icon(Icons.keyboard_arrow_right),
+                      onTap: (){
+                        //create formula for specific donor data
+                      },
+                    ),
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 15),
+                      width: double.infinity,
+                      height: 1,
+                      color: Colors.grey.shade400,
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.location_on, color: Color(0xFFDA4148)),
+                      title: Text("Zmień lokalizację"),
+                      trailing: Icon(Icons.keyboard_arrow_right),
+                      onTap: (){
+                        //create localization type
+                      },
+                    ),
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 15),
+                      width: double.infinity,
+                      height: 1,
+                      color: Colors.grey.shade400,
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.settings, color: Color(0xFFDA4148)),
+                      title: Text("Ustawienia konta"),
+                      trailing: Icon(Icons.keyboard_arrow_right),
+                      onTap: (){
+                        //change password, emails etc.
+                      },
+                    ),
+                  ],
+                )
+              ),
+              const SizedBox(height: 30),
+              Text("Notyfikacje"),
+              const SizedBox(height: 10),
+              SwitchListTile(
+                value: _toggled,
+                title: Text("Powiadomienia donacji krwi"),
+                onChanged: (bool value) {
+                  setState(() => _toggled = value);
+                },
+              ),
+              SwitchListTile(
+                value: _toggled2,
+                title: Text("Powiadomienia o bonusach dla dawców"),
+                onChanged: (bool value) {
+                  setState(() => _toggled2 = value);
+              },
+              ),
+              const SizedBox(height: 50),
+              logoutButton,
+            ]),
       ),
     );
   }
