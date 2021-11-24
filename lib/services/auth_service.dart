@@ -1,4 +1,4 @@
-import 'package:bblood/model/user_model.dart';
+import 'package:bblood/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 
 class AuthService {

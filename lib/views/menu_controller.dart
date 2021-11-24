@@ -1,8 +1,8 @@
-import 'package:bblood/front/benefits_page.dart';
-import 'package:bblood/front/blood_card_page.dart';
-import 'package:bblood/front/home_page.dart';
-import 'package:bblood/front/map_page.dart';
-import 'package:bblood/front/research_page.dart';
+import 'package:bblood/views/benefits_page.dart';
+import 'package:bblood/views/blood_card_page.dart';
+import 'package:bblood/views/home_page.dart';
+import 'package:bblood/views/map_page.dart';
+import 'package:bblood/views/research_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

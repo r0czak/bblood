@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:bblood/front/user_profile_page.dart';
+import 'package:bblood/views/user_profile_page.dart';
 
 class BloodCardScreen extends StatefulWidget {
   const BloodCardScreen({Key? key}) : super(key: key);

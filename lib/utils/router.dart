@@ -1,9 +1,9 @@
-import 'package:bblood/front/menu_controller.dart';
+import 'package:bblood/views/menu_controller.dart';
 import 'package:flutter/material.dart';
 
-import '../front/login_page.dart';
-import '../front/registration_page.dart';
-import '../front/user_profile_page.dart';
+import '../views/login_page.dart';
+import '../views/registration_page.dart';
+import '../views/user_profile_page.dart';
 import '../wrapper.dart';
 
 class Router {
@@ -12,13 +12,13 @@ class Router {
       case '/':
         return MaterialPageRoute(builder: (_) => Wrapper());
       case '/login':
-        return MaterialPageRoute(builder: (_) => LoginScreen());
+        return MaterialPageRoute(builder: (_) => const LoginScreen());
       case '/home':
-        return MaterialPageRoute(builder: (_) => MenuController());
+        return MaterialPageRoute(builder: (_) => const MenuController());
       case '/profile':
         return MaterialPageRoute(builder: (_) => UserProfileScreen());
       case '/register':
-        return MaterialPageRoute(builder: (_) => RegistrationScreen());
+        return MaterialPageRoute(builder: (_) => const RegistrationScreen());
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(
