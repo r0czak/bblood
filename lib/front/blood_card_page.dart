@@ -27,7 +27,7 @@ class _BloodCardScreenState extends State<BloodCardScreen> {
                 key: _formKey,
                 child: Column(
                     children: <Widget>[
-                      Text("Dane oddawanej krwi")
+                      Text("Dane oddawanej krwi, ilsoc karty")
                     ]
                 ),
               ),
