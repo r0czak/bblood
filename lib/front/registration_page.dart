@@ -107,7 +107,6 @@ class _RegistrationScreenState extends State<RegistrationScreen>
         onTap: () {
           // Below line stops keyboard from appearing
           FocusScope.of(context).requestFocus(FocusNode());
-
           showDatePicker(
                   context: context,
                   initialDate: DateTime.now(),
@@ -119,10 +118,12 @@ class _RegistrationScreenState extends State<RegistrationScreen>
             });
           });
         },
-        validator: (value) {
-          if (value!.isNotEmpty) return null;
-          return ('Wprowadź datę urodzenia.');
+        /*
+        validator: (date) {
+          if (isDateValid(date!)) return null;
+          return ("Wprowadź datę urodzenia.");
         },
+         */
         decoration: InputDecoration(
           prefixIcon: const Icon(Icons.calendar_today),
           contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
