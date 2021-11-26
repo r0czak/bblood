@@ -4,13 +4,10 @@ import 'package:flutter/material.dart';
 import '../views/login_page.dart';
 import '../views/registration_page.dart';
 import '../views/user_profile_page.dart';
-import '../wrapper.dart';
 
 class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
-      case '/':
-        return MaterialPageRoute(builder: (_) => Wrapper());
       case '/login':
         return MaterialPageRoute(builder: (_) => const LoginScreen());
       case '/home':

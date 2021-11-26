@@ -5,17 +5,18 @@ import '../locator.dart';
 import '../services/auth_service.dart';
 import 'base_model.dart';
 
-class LoginModel extends BaseModel {
+class RegisterModel extends BaseModel {
   final authService = locator<AuthService>();
 
   late String errorMessage;
 
-  Future<bool> signInWithEmailAndPassword(String email, String password) async {
+  Future<bool> createUserWithEmailAndPassword(
+      String email, String password) async {
     setState(ViewState.busy);
 
     try {
       var success =
-          await authService.signInWithEmailAndPassword(email, password);
+          await authService.createUserWithEmailAndPassword(email, password);
       setState(ViewState.idle);
       if (success == null) {
         return false;
@@ -25,16 +26,13 @@ class LoginModel extends BaseModel {
     } on auth.FirebaseAuthException catch (error) {
       switch (error.code) {
         case "invalid-email":
-          errorMessage = "Podany e-mail nie istnieje.";
+          errorMessage = "Niepoprawny e-mail.";
           break;
-        case "user-disabled":
-          errorMessage = "Użytkownik został zablokowany.";
+        case "email-already-in-use":
+          errorMessage = "Adres e-mail już jest w użyciu.";
           break;
-        case "user-not-found":
-          errorMessage = "Podany użytkownik nie istnieje.";
-          break;
-        case "wrong-password":
-          errorMessage = "Podane hasło niepoprawne";
+        case "weak-password":
+          errorMessage = "Ustaw silniejsze hasło.";
           break;
         default:
           errorMessage = "Błąd";
