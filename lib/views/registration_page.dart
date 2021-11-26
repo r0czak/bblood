@@ -1,12 +1,11 @@
 import 'package:bblood/utils/validation.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
+import 'package:stacked/stacked.dart';
 
-import '../services/auth_service.dart';
 import '../viewmodels/register_model.dart';
-import 'base_view.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({Key? key}) : super(key: key);
@@ -35,9 +34,6 @@ class _RegistrationScreenState extends State<RegistrationScreen>
 
   @override
   Widget build(BuildContext context) {
-    // firebase authentication
-    final authService = Provider.of<AuthService>(context);
-
     // TextFormField setup
     final firstNameInput = TextFormField(
         //autofocus: false,
@@ -180,21 +176,22 @@ class _RegistrationScreenState extends State<RegistrationScreen>
           ),
         ));
 
-    return BaseView<RegisterModel>(
+    return ViewModelBuilder<RegisterModel>.reactive(
+        viewModelBuilder: () => RegisterModel(),
         builder: (context, model, child) => Scaffold(
               backgroundColor: const Color(0xFFEDEDED),
               appBar: AppBar(
                 title: const Text("Bbold"),
-                backgroundColor: Color(0xFFDA4148),
+                backgroundColor: const Color(0xFFDA4148),
               ),
               body: Center(
                 child: SingleChildScrollView(
                   child: Container(
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: AssetImage('images/blood_logo_2reg.png'),
+                        image: const AssetImage('images/blood_logo_2reg.png'),
                         colorFilter: ColorFilter.mode(
-                            Color(0xFFEDEDED).withOpacity(0.6),
+                            const Color(0xFFEDEDED).withOpacity(0.6),
                             BlendMode.srcOver),
                       ),
                     ),
@@ -245,12 +242,15 @@ class _RegistrationScreenState extends State<RegistrationScreen>
                                 if (_formKey.currentState!.validate()) {
                                   var registerSucces = await model
                                       .createUserWithEmailAndPassword(
+                                          firstNameController.text,
+                                          lastNameController.text,
+                                          Timestamp.fromDate(_birthdayDate!),
+                                          peselNumberController.text,
                                           emailController.text,
                                           passwordController.text);
                                   if (registerSucces) {
                                     Fluttertoast.showToast(
                                         msg: "Zarejestrowano pomyślnie!");
-                                    Navigator.pushNamed(context, '/');
                                   } else {
                                     Fluttertoast.showToast(
                                         msg: model.errorMessage);

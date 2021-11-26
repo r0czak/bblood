@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:stacked/stacked.dart';
 
 import '../utils/validation.dart';
 import '../viewmodels/login_model.dart';
-import 'base_view.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -63,28 +63,9 @@ class _LoginScreenState extends State<LoginScreen> with InputValidationMixin {
             borderRadius: BorderRadius.circular(20),
           ),
         ));
-    //login button with pressed action
 
-    //register button with pressed action
-    final registerButton = Material(
-      elevation: 4,
-      borderRadius: BorderRadius.circular(30),
-      color: const Color(0xFFF0C631),
-      child: MaterialButton(
-        padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-        onPressed: () {
-          Navigator.pushNamed(context, '/register');
-        },
-        child: const Text(
-          "Zarejestruj się",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-              fontSize: 15, color: Colors.black, fontWeight: FontWeight.bold),
-        ),
-      ),
-    );
-
-    return BaseView<LoginModel>(
+    return ViewModelBuilder<LoginModel>.reactive(
+        viewModelBuilder: () => LoginModel(),
         builder: (context, model, child) => Scaffold(
               backgroundColor: const Color(0xFFDA4148),
               body: Center(
@@ -162,7 +143,27 @@ class _LoginScreenState extends State<LoginScreen> with InputValidationMixin {
                                 style: TextStyle(
                                     fontSize: 20, color: Colors.white)),
                             const SizedBox(height: 10),
-                            registerButton,
+                            //register button with pressed action
+                            Material(
+                              elevation: 4,
+                              borderRadius: BorderRadius.circular(30),
+                              color: const Color(0xFFF0C631),
+                              child: MaterialButton(
+                                padding:
+                                    const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                onPressed: () {
+                                  model.navigateToSignUp();
+                                },
+                                child: const Text(
+                                  "Zarejestruj się",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                       ),

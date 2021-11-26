@@ -3,10 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart' as auth;
 import '../enums/view_state.dart';
 import '../locator.dart';
 import '../services/auth_service.dart';
+import '../services/navigation_service.dart';
 import 'base_model.dart';
 
 class LoginModel extends BaseModel {
   final authService = locator<AuthService>();
+  final _navigationService = locator<NavigationService>();
 
   late String errorMessage;
 
@@ -14,8 +16,8 @@ class LoginModel extends BaseModel {
     setState(ViewState.busy);
 
     try {
-      var success =
-          await authService.signInWithEmailAndPassword(email, password);
+      var success = await authService.signInWithEmailAndPassword(
+          email: email, password: password);
       setState(ViewState.idle);
       if (success == null) {
         return false;
@@ -42,5 +44,9 @@ class LoginModel extends BaseModel {
     }
 
     return false;
+  }
+
+  void navigateToSignUp() {
+    _navigationService.navigateTo('/register');
   }
 }

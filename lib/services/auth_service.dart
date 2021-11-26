@@ -1,4 +1,5 @@
 import 'package:bblood/models/user_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 
 import '../locator.dart';
@@ -8,9 +9,9 @@ class AuthService {
   final auth.FirebaseAuth _firebaseAuth = auth.FirebaseAuth.instance;
   final FirestoreService _firestoreService = locator<FirestoreService>();
 
-  late User _currentUser;
+  User? _currentUser;
 
-  User get currentUser => _currentUser;
+  User get currentUser => _currentUser!;
 
   Future signInWithEmailAndPassword({
     required String email,
@@ -28,10 +29,10 @@ class AuthService {
     }
   }
 
-  Future signUpWithEmail({
+  Future signUpWithEmailAndPassword({
     required String firstName,
     required String lastName,
-    required DateTime birthday,
+    required Timestamp birthday,
     required String peselNumber,
     required String email,
     required String password,
@@ -52,7 +53,7 @@ class AuthService {
           email: email,
           password: password);
 
-      await _firestoreService.createUser(_currentUser);
+      await _firestoreService.createUser(_currentUser!);
 
       return authResult.user != null;
     } catch (e) {
@@ -62,46 +63,10 @@ class AuthService {
 
   Future<bool> isUserLoggedIn() async {
     var user = _firebaseAuth.currentUser;
+    //signOut();
     await _populateCurrentUser(user);
     return user != null;
   }
-
-  // User? _userFromFirebase(auth.User? user) {
-  //   if (user == null) return null;
-  //   return User(user.uid, user.email);
-  // }
-  //
-  // Stream<User?>? get user {
-  //   return _firebaseAuth.authStateChanges().map(_userFromFirebase);
-  // }
-  //
-  // Future<User?> signInWithEmailAndPassword(
-  //   String email,
-  //   String password,
-  // ) async {
-  //   try {
-  //     final credential = await _firebaseAuth.signInWithEmailAndPassword(
-  //         email: email, password: password);
-  //
-  //     return _userFromFirebase(credential.user);
-  //   } on auth.FirebaseAuthException {
-  //     rethrow;
-  //   }
-  // }
-  //
-  // Future<User?> createUserWithEmailAndPassword(
-  //   String email,
-  //   String password,
-  // ) async {
-  //   try {
-  //     final credential = await _firebaseAuth.createUserWithEmailAndPassword(
-  //         email: email, password: password);
-  //
-  //     return _userFromFirebase(credential.user);
-  //   } on auth.FirebaseAuthException {
-  //     rethrow;
-  //   }
-  // }
 
   Future<void> signOut() async {
     return await _firebaseAuth.signOut();
