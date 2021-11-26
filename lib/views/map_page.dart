@@ -16,7 +16,7 @@ class _MapScreenState extends State<MapScreen> {
   Completer<GoogleMapController> _controller = Completer();
 
   static LocationService? _selectedLocation = null;
-  static LocationService lodzRckik = LocationService('Lodz, ul.Franciszkańska 17/25', 51.78242385144876, 19.461915438251182, 'Regionalne centrum krwiodactwa i krwiolecznictwa w Lodzi', 'Otwarte dni: pn-pt w godz. 8-16', 'Rckik Lodz', 'images/rckik_logo.png', '_googlePlex');
+  static LocationService lodzRckik = LocationService('Lodz, ul.Franciszkańska 17/25', 51.78242385144876, 19.461915438251182, 'Regionalne centrum krwiodactwa i krwiolecznictwa w Lodzi', 'Otwarte dni: pn-pt w godz. 8-16', 'Rckik Lodz', 'images/rckik.png', '_googlePlex');
   static LocationService warsawRckik = LocationService('Warszawa, ul.Saska 64/75', 52.23280551341, 21.060469150491453, 'Regionalne centrum krwiodactwa i krwiolecznictwa w Warszawie', 'Otwarte dni: pn-sb w godzinach 7-16', 'Rckik Warszawa', 'images/rckik_logo_waw.png', '_googlePlex2');
   static LocationService cracovRckik = LocationService('Krakow, ul.Rzeźnicza 11', 50.05643819177071, 19.95700047443339, 'Regionalne centrum krwiodactwa i krwiolecznictwa w Krakowie', 'Otwarte: brak danych', 'Rckik Krakow', 'images/rckik_logo_cracow.png', '_googlePlex3');
   final List<LocationService> items = <LocationService>[lodzRckik, warsawRckik, cracovRckik];
@@ -127,33 +127,44 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   void _donorPointInfoBox(context){
-    showModalBottomSheet(context: context, builder: (BuildContext bc) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
       return Container(
-        height: MediaQuery.of(context).size.height * .40,
+        height: MediaQuery.of(context).size.height * .50,
         padding: EdgeInsets.all(10),
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("images/rckik_logo.png"),
+            image: AssetImage(_selectedLocation!.logo),
             colorFilter: ColorFilter.mode(Color(0xFFEDEDED).withOpacity(0.9), BlendMode.srcOver),
             fit: BoxFit.fill,
           ),
         ),
         child: Column(
             children: <Widget>[
+
                 SizedBox(
-                  width: 500,
+                  width: 400,
                     child: Image.asset(
-                      //_selectedLocation!.logo,
                       "images/rckik.png",
                       //fit: BoxFit.contain,
                     ),
                   ),
                   const SizedBox(height: 10,),
-                  Text(_selectedLocation!.placeName, style: TextStyle(fontSize: 18)),
+                  Text(_selectedLocation!.placeName, style: TextStyle(fontSize: 22)),
                   const SizedBox(height: 15,),
-                  Text(_selectedLocation!.place, style: TextStyle(fontSize: 15)),
-                  const SizedBox(height: 15,),
-                  Text(_selectedLocation!.description, style: TextStyle(fontSize: 15)),
+                  Row(
+                    children: [
+                      Text(_selectedLocation!.place, style: TextStyle(fontSize: 18)),
+                    ]
+                  ),
+                  //Text(_selectedLocation!.place, style: TextStyle(fontSize: 15)),
+                  const SizedBox(height: 15),
+                  Row(
+                    children: [
+                      Text(_selectedLocation!.description, style: TextStyle(fontSize: 18)),
+                    ]
+                  ),
             ]
           ),
       );
