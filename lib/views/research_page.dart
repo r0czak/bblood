@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:devicelocale/devicelocale.dart';
+import 'dart:async';
 
 class ResearchScreen extends StatefulWidget {
   const ResearchScreen({Key? key}) : super(key: key);
@@ -9,6 +11,7 @@ class ResearchScreen extends StatefulWidget {
 
 class _ResearchScreenState extends State<ResearchScreen> {
   final _formKey = GlobalKey<FormState>();
+  String? _location;
 
   @override
   Widget build(BuildContext context) {

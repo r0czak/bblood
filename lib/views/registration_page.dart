@@ -104,7 +104,6 @@ class _RegistrationScreenState extends State<RegistrationScreen>
         onTap: () {
           // Below line stops keyboard from appearing
           FocusScope.of(context).requestFocus(FocusNode());
-
           showDatePicker(
                   context: context,
                   initialDate: DateTime.now(),
