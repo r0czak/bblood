@@ -3,8 +3,8 @@ import 'package:bblood/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'front/login_page.dart';
-import 'front/menu_controller.dart';
+import 'views/login_page.dart';
+import 'views/menu_controller.dart';
 
 class Wrapper extends StatelessWidget {
   @override
