@@ -81,6 +81,9 @@ flutter:
     - images/rckik_logo.png
     - images/rckik_logo_waw.png
     - images/rckik_logo_cracow.png
+    - images/pharmacy.png
+    - images/transport.png
+    - images/gadgets.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
