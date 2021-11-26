@@ -1,9 +1,9 @@
-import 'package:bblood/front/menu_controller.dart';
+import 'package:bblood/views/menu_controller.dart';
 import 'package:flutter/material.dart';
 
-import '../front/login_page.dart';
-import '../front/registration_page.dart';
-import '../front/user_profile_page.dart';
+import '../views/login_page.dart';
+import '../views/registration_page.dart';
+import '../views/user_profile_page.dart';
 import '../wrapper.dart';
 
 class Router {

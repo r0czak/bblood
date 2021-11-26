@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:bblood/front/user_profile_page.dart';
+import 'package:bblood/views/user_profile_page.dart';
 import 'package:bblood/widgets/blood_card_widget.dart';
 
 class BloodCardScreen extends StatefulWidget {
@@ -14,7 +14,8 @@ class _BloodCardScreenState extends State<BloodCardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFEDEDED),
+        resizeToAvoidBottomInset: false,
+        backgroundColor: const Color(0xFFEDEDED),
       body: Container(
         child: Padding(
           padding: EdgeInsets.only(left: 10, right: 10, top: 10),

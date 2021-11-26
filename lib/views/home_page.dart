@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:bblood/front/user_profile_page.dart';
+import 'package:bblood/views/user_profile_page.dart';
 
 import '../services/auth_service.dart';
 
