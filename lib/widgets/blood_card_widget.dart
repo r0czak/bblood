@@ -7,7 +7,7 @@ class CardWidget extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return Container(
-        child: GridView(
+      child: GridView(
         children: [
           Card(
             color: Color(0xFFDA4148),
@@ -18,13 +18,20 @@ class CardWidget extends StatelessWidget {
             child: Column(
               children: [
                 SizedBox(height: 25),
-                Text("Krew pełna", style: TextStyle(color: Colors.white, fontSize: 22)),
+                Text("Krew pełna",
+                    style: TextStyle(color: Colors.white, fontSize: 18)),
                 SizedBox(height: 20),
-                Text(amount! + " ml", style: TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold)),
+                Text(amount! + " ml",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 26,
+                        fontWeight: FontWeight.bold)),
                 SizedBox(height: 25),
-                Text("Następna donacja za 40 dni", style: TextStyle(color: Colors.white, fontSize: 13)),
+                Text("Następna donacja za 40 dni",
+                    style: TextStyle(color: Colors.white, fontSize: 10)),
                 SizedBox(height: 5),
-                Text("25.12.2021 r.", style: TextStyle(color: Colors.white, fontSize: 15)),
+                Text("25.12.2021 r.",
+                    style: TextStyle(color: Colors.white, fontSize: 12)),
               ],
             ),
           ),
@@ -37,13 +44,20 @@ class CardWidget extends StatelessWidget {
             child: Column(
               children: [
                 SizedBox(height: 25),
-                Text("Osocze", style: TextStyle(color: Colors.white, fontSize: 22)),
+                Text("Osocze",
+                    style: TextStyle(color: Colors.white, fontSize: 18)),
                 SizedBox(height: 20),
-                Text("400 ml", style: TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold)),
+                Text("400 ml",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold)),
                 SizedBox(height: 25),
-                Text("Następna donacja za 15 dni", style: TextStyle(color: Colors.white, fontSize: 13)),
+                Text("Następna donacja za 15 dni",
+                    style: TextStyle(color: Colors.white, fontSize: 10)),
                 SizedBox(height: 5),
-                Text("06.12.2021 r.", style: TextStyle(color: Colors.white, fontSize: 15)),
+                Text("06.12.2021 r.",
+                    style: TextStyle(color: Colors.white, fontSize: 12)),
               ],
             ),
           ),
@@ -56,13 +70,20 @@ class CardWidget extends StatelessWidget {
             child: Column(
               children: [
                 SizedBox(height: 25),
-                Text("Płytki krwi", style: TextStyle(color: Colors.white, fontSize: 22)),
+                Text("Płytki krwi",
+                    style: TextStyle(color: Colors.white, fontSize: 18)),
                 SizedBox(height: 20),
-                Text("500 ml", style: TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold)),
+                Text("500 ml",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold)),
                 SizedBox(height: 25),
-                Text("Następna donacja za 40 dni", style: TextStyle(color: Colors.white, fontSize: 13)),
+                Text("Następna donacja za 40 dni",
+                    style: TextStyle(color: Colors.white, fontSize: 10)),
                 SizedBox(height: 5),
-                Text("25.12.2021 r.", style: TextStyle(color: Colors.white, fontSize: 15)),
+                Text("25.12.2021 r.",
+                    style: TextStyle(color: Colors.white, fontSize: 12)),
               ],
             ),
           ),
@@ -76,13 +97,20 @@ class CardWidget extends StatelessWidget {
               child: Column(
                 children: [
                   SizedBox(height: 25),
-                  Text("Krwinki czerwone", style: TextStyle(color: Colors.white, fontSize: 22)),
+                  Text("Krwinki czerwone",
+                      style: TextStyle(color: Colors.white, fontSize: 18)),
                   SizedBox(height: 20),
-                  Text("0 ml", style: TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold)),
+                  Text("0 ml",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 32,
+                          fontWeight: FontWeight.bold)),
                   SizedBox(height: 25),
-                  Text("Następna donacja za 40 dni", style: TextStyle(color: Colors.white, fontSize: 13)),
+                  Text("Następna donacja za 40 dni",
+                      style: TextStyle(color: Colors.white, fontSize: 10)),
                   SizedBox(height: 5),
-                  Text("25.12.2021 r.", style: TextStyle(color: Colors.white, fontSize: 15)),
+                  Text("25.12.2021 r.",
+                      style: TextStyle(color: Colors.white, fontSize: 12)),
                 ],
               ),
             ),
@@ -96,13 +124,20 @@ class CardWidget extends StatelessWidget {
             child: Column(
               children: [
                 SizedBox(height: 25),
-                Text("Krwinki białe", style: TextStyle(color: Colors.white, fontSize: 22)),
+                Text("Krwinki białe",
+                    style: TextStyle(color: Colors.white, fontSize: 18)),
                 SizedBox(height: 20),
-                Text("0 ml", style: TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold)),
+                Text("0 ml",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold)),
                 SizedBox(height: 25),
-                Text("Następna donacja za 40 dni", style: TextStyle(color: Colors.white, fontSize: 13)),
+                Text("Następna donacja za 40 dni",
+                    style: TextStyle(color: Colors.white, fontSize: 10)),
                 SizedBox(height: 5),
-                Text("25.12.2021 r.", style: TextStyle(color: Colors.white, fontSize: 15)),
+                Text("25.12.2021 r.",
+                    style: TextStyle(color: Colors.white, fontSize: 12)),
               ],
             ),
           ),
@@ -115,19 +150,27 @@ class CardWidget extends StatelessWidget {
             child: Column(
               children: [
                 SizedBox(height: 25),
-                Text("Osocze i płytki", style: TextStyle(color: Colors.white, fontSize: 22)),
+                Text("Osocze i płytki",
+                    style: TextStyle(color: Colors.white, fontSize: 18)),
                 SizedBox(height: 20),
-                Text("0 ml", style: TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold)),
+                Text("0 ml",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold)),
                 SizedBox(height: 25),
-                Text("Następna donacja za 40 dni", style: TextStyle(color: Colors.white, fontSize: 13)),
+                Text("Następna donacja za 40 dni",
+                    style: TextStyle(color: Colors.white, fontSize: 10)),
                 SizedBox(height: 5),
-                Text("25.12.2021 r.", style: TextStyle(color: Colors.white, fontSize: 15)),
+                Text("25.12.2021 r.",
+                    style: TextStyle(color: Colors.white, fontSize: 12)),
               ],
             ),
           ),
         ],
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, mainAxisSpacing: 15, crossAxisSpacing: 15),
-    ),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2, mainAxisSpacing: 15, crossAxisSpacing: 15),
+      ),
     );
   }
 }

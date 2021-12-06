@@ -1,11 +1,5 @@
-import 'package:bblood/model/user_info_model.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-import '../services/auth_service.dart';
 
 class HonoryCardScreen extends StatefulWidget {
   const HonoryCardScreen({Key? key}) : super(key: key);
@@ -19,7 +13,6 @@ class _HonoryCardScreenState extends State<HonoryCardScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       //backgroundColor: const Color(0xFFDA4148),
       backgroundColor: const Color(0xFFEDEDED),
@@ -37,8 +30,7 @@ class _HonoryCardScreenState extends State<HonoryCardScreen> {
                   color: Colors.white,
                   size: 35.0,
                 ),
-              )
-          ),
+              )),
         ],
       ),
       body: Center(
@@ -50,7 +42,8 @@ class _HonoryCardScreenState extends State<HonoryCardScreen> {
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: AssetImage('images/blood_logo_2reg.png'),
-                colorFilter: ColorFilter.mode(Color(0xFFEDEDED).withOpacity(0.8), BlendMode.srcOver),
+                colorFilter: ColorFilter.mode(
+                    Color(0xFFEDEDED).withOpacity(0.8), BlendMode.srcOver),
                 fit: BoxFit.contain,
               ),
             ),
@@ -75,7 +68,8 @@ class _HonoryCardScreenState extends State<HonoryCardScreen> {
                     ],
                   ),
                   SizedBox(height: 30),
-                  Text("Legitymacja zasłużonego dawcy krwi", style: TextStyle(color: Color(0xFFDA4148), fontSize: 20)),
+                  Text("Legitymacja zasłużonego dawcy krwi",
+                      style: TextStyle(color: Color(0xFFDA4148), fontSize: 20)),
                   SizedBox(height: 20),
                   Text("- Data urodzenia -"),
                   Text("  14-05-1997", style: TextStyle(fontSize: 17)),
@@ -84,10 +78,13 @@ class _HonoryCardScreenState extends State<HonoryCardScreen> {
                   Text("  Lodz", style: TextStyle(fontSize: 17)),
                   SizedBox(height: 10),
                   Text("- Grupa krwi -"),
-                  Text("  A Rh+", style: TextStyle(color: Color(0xFFDA4148), fontSize: 25)),
+                  Text("  A Rh+",
+                      style: TextStyle(color: Color(0xFFDA4148), fontSize: 25)),
                   SizedBox(height: 20),
                   Text("- Zarejestrowany w -"),
-                  Text("Regionalne centrum krwiodactwa i krwiolecznictwa w Lodzi", style: TextStyle(color: Color(0xFFDA4148), fontSize: 20)),
+                  Text(
+                      "Regionalne centrum krwiodactwa i krwiolecznictwa w Lodzi",
+                      style: TextStyle(color: Color(0xFFDA4148), fontSize: 20)),
                   SizedBox(height: 50),
                   SizedBox(
                       height: 130,
@@ -101,5 +98,4 @@ class _HonoryCardScreenState extends State<HonoryCardScreen> {
       ),
     );
   }
-
 }

@@ -1,13 +1,15 @@
-class UserInfoModel {
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+class User {
   String? uid;
   String? firstName;
   String? lastName;
-  DateTime? birthday;
+  Timestamp? birthday;
   String? peselNumber;
   String? email;
   String? password;
 
-  UserInfoModel(
+  User(
       {this.uid,
       this.firstName,
       this.lastName,
@@ -16,9 +18,8 @@ class UserInfoModel {
       this.email,
       this.password});
 
-  // receive data from the server
-  factory UserInfoModel.fromMap(map) {
-    return UserInfoModel(
+  factory User.fromMap(map) {
+    return User(
         uid: map['uid'],
         firstName: map['firstName'],
         lastName: map['lastName'],

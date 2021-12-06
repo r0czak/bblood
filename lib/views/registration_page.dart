@@ -1,11 +1,11 @@
 import 'package:bblood/utils/validation.dart';
-import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
+import 'package:stacked/stacked.dart';
 
-import '../services/auth_service.dart';
+import '../viewmodels/register_model.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({Key? key}) : super(key: key);
@@ -34,9 +34,6 @@ class _RegistrationScreenState extends State<RegistrationScreen>
 
   @override
   Widget build(BuildContext context) {
-    // firebase authentication
-    final authService = Provider.of<AuthService>(context);
-
     // TextFormField setup
     final firstNameInput = TextFormField(
         //autofocus: false,
@@ -118,12 +115,10 @@ class _RegistrationScreenState extends State<RegistrationScreen>
             });
           });
         },
-        /*
-        validator: (date) {
-          if (isDateValid(date!)) return null;
-          return ("Wprowadź datę urodzenia.");
-        },
-         */
+        // validator: (value) {
+        //   if (value!.isNotEmpty) return null;
+        //   return ('Wprowadź datę urodzenia.');
+        // },
         decoration: InputDecoration(
           prefixIcon: const Icon(Icons.calendar_today),
           contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
@@ -180,103 +175,103 @@ class _RegistrationScreenState extends State<RegistrationScreen>
           ),
         ));
 
-    final registerButton = Material(
-      elevation: 4,
-      borderRadius: BorderRadius.circular(30),
-      color: const Color(0xFFF0C631),
-      child: MaterialButton(
-        padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-        minWidth: MediaQuery.of(context).size.width,
-        onPressed: () async {
-          if (_formKey.currentState!.validate()) {
-            try {
-              await authService.createUserWithEmailAndPassword(
-                  emailController.text, passwordController.text);
-              Fluttertoast.showToast(msg: "Zarejestrowano pomyślnie!");
-              Navigator.pushNamed(context, '/');
-            } on auth.FirebaseAuthException catch (error) {
-              String? errorMessage;
-              switch (error.code) {
-                case "invalid-email":
-                  errorMessage = "Niepoprawny e-mail.";
-                  break;
-                case "email-already-in-use":
-                  errorMessage = "Adres e-mail już jest w użyciu.";
-                  break;
-                case "weak-password":
-                  errorMessage = "Ustaw silniejsze hasło.";
-                  break;
-                default:
-                  errorMessage = "Błąd";
-              }
-              Fluttertoast.showToast(msg: errorMessage);
-            }
-          }
-        },
-        child: const Text(
-          "Utwórz konto dawcy",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-              fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold),
-        ),
-      ),
-    );
-
-    return Scaffold(
-      //backgroundColor: const Color(0xFFDA4148),
-      backgroundColor: const Color(0xFFEDEDED),
-      appBar: AppBar(
-        title: const Text("Bbold"),
-        backgroundColor: Color(0xFFDA4148),
-      ),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Container(
-            //color: const Color(0xFFEDEDED),
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('images/blood_logo_2reg.png'),
-                colorFilter: ColorFilter.mode(Color(0xFFEDEDED).withOpacity(0.6), BlendMode.srcOver),
+    return ViewModelBuilder<RegisterModel>.reactive(
+        viewModelBuilder: () => RegisterModel(),
+        builder: (context, model, child) => Scaffold(
+              backgroundColor: const Color(0xFFEDEDED),
+              appBar: AppBar(
+                title: const Text("Bbold"),
+                backgroundColor: const Color(0xFFDA4148),
               ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(45.0),
-              child: Form(
-                key: _formKey,
-                child: Column(children: <Widget>[
-                  const Text("Rejestracja",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 30, color: Colors.red, fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 20),
-                  const Text("Dane osobowe",
-                      textAlign: TextAlign.left,
-                      style: TextStyle(fontSize: 15, color: Colors.red)),
-                  const SizedBox(height: 10),
-                  firstNameInput,
-                  const SizedBox(height: 10),
-                  lastNameInput,
-                  const SizedBox(height: 10),
-                  birthdayInput,
-                  const SizedBox(height: 10),
-                  peselInput,
-                  const SizedBox(height: 20),
-                  const Text("Dane konta",
-                      textAlign: TextAlign.left,
-                      style: TextStyle(fontSize: 15, color: Colors.red)),
-                  const SizedBox(height: 10),
-                  emailInput,
-                  // const SizedBox(height: 10),
-                  // loginInput,
-                  const SizedBox(height: 10),
-                  passwordInput,
-                  const SizedBox(height: 30),
-                  registerButton,
-                ]),
+              body: Center(
+                child: SingleChildScrollView(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: const AssetImage('images/blood_logo_2reg.png'),
+                        colorFilter: ColorFilter.mode(
+                            const Color(0xFFEDEDED).withOpacity(0.6),
+                            BlendMode.srcOver),
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(45.0),
+                      child: Form(
+                        key: _formKey,
+                        child: Column(children: <Widget>[
+                          const Text("Rejestracja",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 30,
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.bold)),
+                          const SizedBox(height: 20),
+                          const Text("Dane osobowe",
+                              textAlign: TextAlign.left,
+                              style:
+                                  TextStyle(fontSize: 15, color: Colors.red)),
+                          const SizedBox(height: 10),
+                          firstNameInput,
+                          const SizedBox(height: 10),
+                          lastNameInput,
+                          const SizedBox(height: 10),
+                          birthdayInput,
+                          const SizedBox(height: 10),
+                          peselInput,
+                          const SizedBox(height: 20),
+                          const Text("Dane konta",
+                              textAlign: TextAlign.left,
+                              style:
+                                  TextStyle(fontSize: 15, color: Colors.red)),
+                          const SizedBox(height: 10),
+                          emailInput,
+                          // const SizedBox(height: 10),
+                          // loginInput,
+                          const SizedBox(height: 10),
+                          passwordInput,
+                          const SizedBox(height: 30),
+                          Material(
+                            elevation: 4,
+                            borderRadius: BorderRadius.circular(30),
+                            color: const Color(0xFFF0C631),
+                            child: MaterialButton(
+                              padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                              minWidth: MediaQuery.of(context).size.width,
+                              onPressed: () async {
+                                if (_formKey.currentState!.validate()) {
+                                  var registerSucces = await model
+                                      .createUserWithEmailAndPassword(
+                                          firstNameController.text,
+                                          lastNameController.text,
+                                          Timestamp.fromDate(_birthdayDate!),
+                                          peselNumberController.text,
+                                          emailController.text,
+                                          passwordController.text);
+                                  if (registerSucces) {
+                                    Fluttertoast.showToast(
+                                        msg: "Zarejestrowano pomyślnie!");
+                                  } else {
+                                    Fluttertoast.showToast(
+                                        msg: model.errorMessage);
+                                  }
+                                }
+                              },
+                              child: const Text(
+                                "Utwórz konto dawcy",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ),
+                        ]),
+                      ),
+                    ),
+                  ),
+                ),
               ),
-            ),
-          ),
-        ),
-      ),
-    );
+            ));
   }
 }

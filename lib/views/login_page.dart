@@ -1,10 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:provider/provider.dart';
+import 'package:stacked/stacked.dart';
 
-import '../services/auth_service.dart';
 import '../utils/validation.dart';
+import '../viewmodels/login_model.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -22,9 +21,6 @@ class _LoginScreenState extends State<LoginScreen> with InputValidationMixin {
 
   @override
   Widget build(BuildContext context) {
-    // firebase authentication
-    final authService = Provider.of<AuthService>(context);
-
     // TextFormField setup
     final emailInput = TextFormField(
         //autofocus: false,
@@ -67,120 +63,168 @@ class _LoginScreenState extends State<LoginScreen> with InputValidationMixin {
             borderRadius: BorderRadius.circular(20),
           ),
         ));
-    //login button with pressed action
-    final loginButton = Material(
-      elevation: 4,
-      borderRadius: BorderRadius.circular(30),
-      color: const Color(0xFFF0C631),
-      child: MaterialButton(
-        padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-        minWidth: MediaQuery.of(context).size.width,
-        onPressed: () async {
-          if (_formKey.currentState!.validate()) {
-            try {
-              await authService.signInWithEmailAndPassword(
-                  emailController.text, passwordController.text);
-              Fluttertoast.showToast(msg: "Signing in succesfull!");
-            } on auth.FirebaseAuthException catch (error) {
-              String? errorMessage;
-              switch (error.code) {
-                case "invalid-email":
-                  errorMessage = "Invalid email.";
-                  break;
-                case "user-disabled":
-                  errorMessage = "User has been disabled.";
-                  break;
-                case "user-not-found":
-                  errorMessage = "User with this email doesn't exist.";
-                  break;
-                case "wrong-password":
-                  errorMessage = "Wrong password";
-                  break;
-                default:
-                  errorMessage = "Undefined error.";
-              }
-              Fluttertoast.showToast(msg: errorMessage);
-            }
-          }
-        },
-        child: const Text(
-          "Zaloguj",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-              fontSize: 22, color: Colors.black, fontWeight: FontWeight.bold),
-        ),
-      ),
-    );
-    //register button with pressed action
-    final registerButton = Material(
-      elevation: 4,
-      borderRadius: BorderRadius.circular(30),
-      color: const Color(0xFFF0C631),
-      child: MaterialButton(
-        padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-        onPressed: () {
-          Navigator.pushNamed(context, '/register');
-        },
-        child: const Text(
-          "Zarejestruj się",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-              fontSize: 15, color: Colors.black, fontWeight: FontWeight.bold),
-        ),
-      ),
-    );
 
-    return Scaffold(
-      backgroundColor: const Color(0xFFDA4148),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Container(
-            color: const Color(0xFFDA4148),
-            child: Padding(
-              padding: const EdgeInsets.all(45.0),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    SizedBox(
-                        height: 250,
-                        child: Image.asset(
-                          "images/blood_logo.png",
-                          fit: BoxFit.contain,
-                        )),
-                    /*const Text("Bbold",
+    return ViewModelBuilder<LoginModel>.reactive(
+        viewModelBuilder: () => LoginModel(),
+        builder: (context, model, child) => Scaffold(
+              backgroundColor: const Color(0xFFDA4148),
+              body: Center(
+                child: SingleChildScrollView(
+                  child: Container(
+                    color: const Color(0xFFDA4148),
+                    child: Padding(
+                      padding: const EdgeInsets.all(45.0),
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            SizedBox(
+                                height: 250,
+                                child: Image.asset(
+                                  "images/blood_logo.png",
+                                  fit: BoxFit.contain,
+                                )),
+                            /*const Text("Bbold",
                         style: TextStyle(fontSize: 60, color: Colors.white)),*/
-                    SizedBox(
-                        height: 70,
-                        child: Image.asset(
-                          "images/app_name.png",
-                          fit: BoxFit.contain,
-                        )),
-                    const SizedBox(height: 30),
-                    emailInput,
-                    const SizedBox(height: 10),
-                    passwordInput,
-                    const SizedBox(height: 20),
-                    loginButton,
-                    const SizedBox(height: 10),
-                    const Text("Zapomniałeś hasła? >",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 14, color: Colors.white)),
-                    const SizedBox(height: 70),
-                    const Text("Chcesz zostać dawcą krwi?",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 20, color: Colors.white)),
-                    const SizedBox(height: 10),
-                    registerButton,
-                  ],
+                            SizedBox(
+                                height: 70,
+                                child: Image.asset(
+                                  "images/app_name.png",
+                                  fit: BoxFit.contain,
+                                )),
+                            const SizedBox(height: 30),
+                            emailInput,
+                            const SizedBox(height: 10),
+                            passwordInput,
+                            const SizedBox(height: 20),
+                            Material(
+                              elevation: 4,
+                              borderRadius: BorderRadius.circular(30),
+                              color: const Color(0xFFF0C631),
+                              child: MaterialButton(
+                                padding:
+                                    const EdgeInsets.fromLTRB(20, 15, 20, 15),
+                                minWidth: MediaQuery.of(context).size.width,
+                                onPressed: () async {
+                                  if (_formKey.currentState!.validate()) {
+                                    var loginSuccess =
+                                        await model.signInWithEmailAndPassword(
+                                            emailController.text,
+                                            passwordController.text);
+                                    if (loginSuccess) {
+                                      model.navigateToHome();
+                                      Fluttertoast.showToast(
+                                          msg: "Signing in succesfull!");
+                                    } else {
+                                      Fluttertoast.showToast(
+                                          msg: model.errorMessage);
+                                    }
+                                  }
+                                },
+                                child: const Text(
+                                  "Zaloguj",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 22,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            const Text("Zapomniałeś hasła? >",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 14, color: Colors.white)),
+                            const SizedBox(height: 70),
+                            const Text("Chcesz zostać dawcą krwi?",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 20, color: Colors.white)),
+                            const SizedBox(height: 10),
+                            //register button with pressed action
+                            Material(
+                              elevation: 4,
+                              borderRadius: BorderRadius.circular(30),
+                              color: const Color(0xFFF0C631),
+                              child: MaterialButton(
+                                padding:
+                                    const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                onPressed: () {
+                                  model.navigateToSignUp();
+                                },
+                                child: const Text(
+                                  "Zarejestruj się",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
-        ),
-      ),
-    );
+            ));
+
+    // return Scaffold(
+    //   backgroundColor: const Color(0xFFDA4148),
+    //   body: Center(
+    //     child: SingleChildScrollView(
+    //       child: Container(
+    //         color: const Color(0xFFDA4148),
+    //         child: Padding(
+    //           padding: const EdgeInsets.all(45.0),
+    //           child: Form(
+    //             key: _formKey,
+    //             child: Column(
+    //               mainAxisAlignment: MainAxisAlignment.center,
+    //               crossAxisAlignment: CrossAxisAlignment.center,
+    //               children: <Widget>[
+    //                 SizedBox(
+    //                     height: 250,
+    //                     child: Image.asset(
+    //                       "images/blood_logo.png",
+    //                       fit: BoxFit.contain,
+    //                     )),
+    //                 /*const Text("Bbold",
+    //                     style: TextStyle(fontSize: 60, color: Colors.white)),*/
+    //                 SizedBox(
+    //                     height: 70,
+    //                     child: Image.asset(
+    //                       "images/app_name.png",
+    //                       fit: BoxFit.contain,
+    //                     )),
+    //                 const SizedBox(height: 30),
+    //                 emailInput,
+    //                 const SizedBox(height: 10),
+    //                 passwordInput,
+    //                 const SizedBox(height: 20),
+    //                 loginButton,
+    //                 const SizedBox(height: 10),
+    //                 const Text("Zapomniałeś hasła? >",
+    //                     textAlign: TextAlign.center,
+    //                     style: TextStyle(fontSize: 14, color: Colors.white)),
+    //                 const SizedBox(height: 70),
+    //                 const Text("Chcesz zostać dawcą krwi?",
+    //                     textAlign: TextAlign.center,
+    //                     style: TextStyle(fontSize: 20, color: Colors.white)),
+    //                 const SizedBox(height: 10),
+    //                 registerButton,
+    //               ],
+    //             ),
+    //           ),
+    //         ),
+    //       ),
+    //     ),
+    //   ),
+    // );
   }
 }
