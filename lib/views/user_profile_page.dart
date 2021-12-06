@@ -1,6 +1,3 @@
-import 'package:bblood/model/user_info_model.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -17,6 +14,7 @@ class UserProfileScreen extends StatefulWidget {
 
 class _UserProfileScreenState extends State<UserProfileScreen> {
   final _formKey = GlobalKey<FormState>();
+
   /*
   User? user = FirebaseAuth.instance.currentUser;
   UserInfoModel userData = UserInfoModel();
@@ -36,6 +34,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
    */
   var _toggled = true;
   var _toggled2 = true;
+
   @override
   Widget build(BuildContext context) {
     final authService = locator<AuthService>();
@@ -114,50 +113,51 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               SizedBox(height: 25),
               Text("Ustawienia"),
               Card(
-                elevation: 4,
-                margin: const EdgeInsets.fromLTRB(15, 10, 15, 10),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                child: Column(
-                  children: <Widget>[
-                    ListTile(
-                      leading: Icon(Icons.person, color: Color(0xFFDA4148)),
-                      title: Text("Dane szczegółowe dawcy"),
-                      trailing: Icon(Icons.keyboard_arrow_right),
-                      onTap: (){
-                        //create formula for specific donor data
-                      },
-                    ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 15),
-                      width: double.infinity,
-                      height: 1,
-                      color: Colors.grey.shade400,
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.location_on, color: Color(0xFFDA4148)),
-                      title: Text("Zmień lokalizację"),
-                      trailing: Icon(Icons.keyboard_arrow_right),
-                      onTap: (){
-                        //create localization type
-                      },
-                    ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 15),
-                      width: double.infinity,
-                      height: 1,
-                      color: Colors.grey.shade400,
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.settings, color: Color(0xFFDA4148)),
-                      title: Text("Ustawienia konta"),
-                      trailing: Icon(Icons.keyboard_arrow_right),
-                      onTap: (){
-                        //change password, emails etc.
-                      },
-                    ),
-                  ],
-                )
-              ),
+                  elevation: 4,
+                  margin: const EdgeInsets.fromLTRB(15, 10, 15, 10),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Column(
+                    children: <Widget>[
+                      ListTile(
+                        leading: Icon(Icons.person, color: Color(0xFFDA4148)),
+                        title: Text("Dane szczegółowe dawcy"),
+                        trailing: Icon(Icons.keyboard_arrow_right),
+                        onTap: () {
+                          //create formula for specific donor data
+                        },
+                      ),
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 15),
+                        width: double.infinity,
+                        height: 1,
+                        color: Colors.grey.shade400,
+                      ),
+                      ListTile(
+                        leading:
+                            Icon(Icons.location_on, color: Color(0xFFDA4148)),
+                        title: Text("Zmień lokalizację"),
+                        trailing: Icon(Icons.keyboard_arrow_right),
+                        onTap: () {
+                          //create localization type
+                        },
+                      ),
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 15),
+                        width: double.infinity,
+                        height: 1,
+                        color: Colors.grey.shade400,
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.settings, color: Color(0xFFDA4148)),
+                        title: Text("Ustawienia konta"),
+                        trailing: Icon(Icons.keyboard_arrow_right),
+                        onTap: () {
+                          //change password, emails etc.
+                        },
+                      ),
+                    ],
+                  )),
               const SizedBox(height: 30),
               Text("Notyfikacje"),
               const SizedBox(height: 10),
@@ -173,7 +173,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 title: Text("Powiadomienia o bonusach dla dawców"),
                 onChanged: (bool value) {
                   setState(() => _toggled2 = value);
-              },
+                },
               ),
               const SizedBox(height: 50),
               logoutButton,
@@ -181,5 +181,4 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       ),
     );
   }
-
 }

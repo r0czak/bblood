@@ -49,4 +49,8 @@ class LoginModel extends BaseModel {
   void navigateToSignUp() {
     _navigationService.navigateTo('/register');
   }
+
+  void navigateToHome() {
+    _navigationService.navigateTo('/home');
+  }
 }
