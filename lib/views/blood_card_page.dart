@@ -41,7 +41,7 @@ class _BloodCardScreenState extends State<BloodCardScreen> {
                           ],
                         ),
                         SizedBox(height: 5,),
-                        Text("Krew pełna", style: TextStyle(fontSize: 18)),
+                        Text("Krew pełna", style: TextStyle(fontSize: 20)),
                         SizedBox(height: 5,),
                         Text("500ml", style: TextStyle(fontSize: 24)),
                         SizedBox(height: 10,),
@@ -66,7 +66,7 @@ class _BloodCardScreenState extends State<BloodCardScreen> {
                 ),
                 Divider(color: Colors.black),
                 Expanded(
-                  child: CardWidget("1500"),
+                  child: CardWidget("1500", DateTime(2021, 12, 11)),
                 ),
               ],
             ),

@@ -86,12 +86,6 @@ class _HonoryCardScreenState extends State<HonoryCardScreen> {
                       "Regionalne centrum krwiodactwa i krwiolecznictwa w Lodzi",
                       style: TextStyle(color: Color(0xFFDA4148), fontSize: 20)),
                   SizedBox(height: 50),
-                  SizedBox(
-                      height: 130,
-                      child: Image.asset(
-                        "images/qr_code.png",
-                        fit: BoxFit.contain,
-                      )),
                 ]),
           ),
         ),
