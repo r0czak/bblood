@@ -22,15 +22,6 @@ class BloodDropsStateWidget extends StatelessWidget {
     'stan wysoki'
   ];
 
-  // int aRhplusAmount = 10;
-  // int aRhminusAmount = 12;
-  // int bRhplusAmount = 10;
-  // int bRhminusAmount = 90;
-  // int abRhplusAmount = 77;
-  // int abRhminusAmount = 10;
-  // int zeroRhplusAmount = 10;
-  // int zeroRhminusAmount = 10;
-
   List<String> loadBloodState(String bloodType) {
     List<String> list = <String>[];
     int check = 0;

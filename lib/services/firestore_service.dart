@@ -2,6 +2,8 @@ import 'package:bblood/models/blood_levels_model.dart';
 import 'package:bblood/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../models/locations_model.dart';
+
 class FirestoreService {
   final CollectionReference _usersCollectionReference =
       FirebaseFirestore.instance.collection('users');
@@ -9,14 +11,8 @@ class FirestoreService {
   final CollectionReference _bloodLevelsCollectionReference =
       FirebaseFirestore.instance.collection('bloodLevels');
 
-  Future<BloodLevelsModel> getBloodLevels(String bid) async {
-    try {
-      var databaseData = await _bloodLevelsCollectionReference.doc(bid).get();
-      return BloodLevelsModel.fromMap(databaseData.data());
-    } catch (e) {
-      rethrow;
-    }
-  }
+  final CollectionReference _locationsCollectionReference =
+      FirebaseFirestore.instance.collection('locations');
 
   Future createUser(User user) async {
     try {
@@ -31,6 +27,32 @@ class FirestoreService {
     try {
       var userData = await _usersCollectionReference.doc(uid).get();
       return User.fromMap(userData.data());
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<BloodLevelsModel> getBloodLevels(String bid) async {
+    try {
+      var databaseData = await _bloodLevelsCollectionReference.doc(bid).get();
+      return BloodLevelsModel.fromMap(databaseData.data());
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<LocationsModel>> getLocations() async {
+    try {
+      QuerySnapshot result = await _locationsCollectionReference.get();
+      List<DocumentSnapshot> documents = result.docs;
+
+      List<LocationsModel> locations = <LocationsModel>[];
+      documents.forEach((data) {
+        locations.add(LocationsModel.fromMap(data));
+      });
+
+
+      return locations;
     } catch (e) {
       rethrow;
     }
