@@ -3,6 +3,7 @@ import 'package:bblood/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../models/locations_model.dart';
+import '../models/user_location_model.dart';
 
 class FirestoreService {
   final CollectionReference _usersCollectionReference =
@@ -17,6 +18,11 @@ class FirestoreService {
   Future createUser(User user) async {
     try {
       await _usersCollectionReference.doc(user.uid).set(user.toMap());
+      await _usersCollectionReference
+          .doc(user.uid)
+          .collection('info')
+          .doc('location')
+          .set(UserLocationModel(location_id: "").toMap());
       //await _usersCollectionReference.add(user.toMap());
     } catch (e) {
       rethrow;
@@ -47,10 +53,9 @@ class FirestoreService {
       List<DocumentSnapshot> documents = result.docs;
 
       List<LocationsModel> locations = <LocationsModel>[];
-      documents.forEach((data) {
+      for (var data in documents) {
         locations.add(LocationsModel.fromMap(data));
-      });
-
+      }
 
       return locations;
     } catch (e) {

@@ -3,10 +3,12 @@ import 'package:bblood/viewmodels/base_model.dart';
 
 import '../locator.dart';
 import '../models/locations_model.dart';
+import '../services/firebase_storage_service.dart';
 import '../services/firestore_service.dart';
 
 class MapViewModel extends BaseModel {
   final _firestoreService = locator<FirestoreService>();
+  final _firebaseStorageService = locator<FirebaseStorageService>();
 
   late List<LocationsModel> locations;
 
@@ -21,7 +23,11 @@ class MapViewModel extends BaseModel {
     return locations;
   }
 
-  bool isEmpty() {
-    return locations.isEmpty;
+  Future<String> getLocationImageURL(String image) async {
+    setState(ViewState.busy);
+    String imageUrl = await _firebaseStorageService.getLocationImageURL(image);
+    setState(ViewState.idle);
+
+    return imageUrl;
   }
 }

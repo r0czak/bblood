@@ -88,7 +88,7 @@ class _MapScreenState extends State<MapScreen> {
                                 onChanged: (LocationsModel? value) {
                                   //setState(() {
                                   _selectedLocation = value;
-                                  _changeCameraPosition(value);
+                                  _changeCameraPosition(value, model);
                                   //});
                                   //_changeCameraPosition(value);
                                 },
@@ -112,32 +112,32 @@ class _MapScreenState extends State<MapScreen> {
             ])));
   }
 
-  Future<void> _changeCameraPosition(LocationsModel? location) async {
+  Future<void> _changeCameraPosition(LocationsModel? location, model) async {
     final GoogleMapController controller = await _controller.future;
 
     final CameraPosition _kLake =
         CameraPosition(target: LatLng(location!.lat, location.long), zoom: 16);
 
     setState(() {
-      setMarker();
+      setMarker(model);
     });
     controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
   }
 
-  void setMarker() {
+  void setMarker(model) {
     Marker _changedMarker = Marker(
       markerId: MarkerId(_selectedLocation!.marker_id),
       //infoWindow: InfoWindow(title: _selectedLocation!.placeName),
       icon: BitmapDescriptor.defaultMarker,
       position: LatLng(_selectedLocation!.lat, _selectedLocation!.long),
       onTap: () {
-        _donorPointInfoBox(context);
+        _donorPointInfoBox(context, model);
       },
     );
     _googlePlexMarker = _changedMarker;
   }
 
-  void _donorPointInfoBox(context) {
+  void _donorPointInfoBox(context, model) {
     showModalBottomSheet(
         context: context,
         builder: (BuildContext bc) {
@@ -154,29 +154,60 @@ class _MapScreenState extends State<MapScreen> {
             // ),
             child: Column(children: <Widget>[
               SizedBox(
-                width: 400,
-                child: Image.asset(
-                  "images/rckik.png",
-                  //fit: BoxFit.contain,
-                ),
-              ),
+                  width: 400,
+                  height: 150,
+                  child: FutureBuilder<String>(
+                    future: model.getLocationImageURL(_selectedLocation!.image),
+                    builder:
+                        (BuildContext context, AsyncSnapshot<String> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        if (snapshot.data == null) {
+                          return Container();
+                        } else {
+                          return Image.network(snapshot.data!,
+                              fit: BoxFit.fitWidth);
+                        }
+                      } else {
+                        return Container();
+                      }
+                    },
+                  )),
               const SizedBox(
                 height: 10,
               ),
               Text(_selectedLocation!.full_name,
-                  style: TextStyle(fontSize: 22)),
+                  style: const TextStyle(fontSize: 22)),
               const SizedBox(
                 height: 15,
               ),
-              Row(children: [
-                Text(_selectedLocation!.address,
-                    style: TextStyle(fontSize: 18)),
-              ]),
+              Align(
+                  alignment: Alignment.centerLeft,
+                  child: Container(
+                    child: Text(
+                      _selectedLocation!.address,
+                      textAlign: TextAlign.left,
+                      style: const TextStyle(fontSize: 18),
+                    ),
+                  )),
+              const SizedBox(
+                height: 8,
+              ),
+
+              Align(
+                  alignment: Alignment.centerLeft,
+                  child: Container(
+                    child: Text(
+                      "Telefon: " + _selectedLocation!.phone,
+                      textAlign: TextAlign.left,
+                      style: const TextStyle(fontSize: 15),
+                    ),
+                  )),
+
               //Text(_selectedLocation!.place, style: TextStyle(fontSize: 15)),
               const SizedBox(height: 15),
-              Row(children: [
-                Text(_selectedLocation!.open, style: TextStyle(fontSize: 18)),
-              ]),
+              Text(_selectedLocation!.open,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(fontSize: 12)),
             ]),
           );
         });
