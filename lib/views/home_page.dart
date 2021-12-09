@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 import '../widgets/blood_drops_state_widget.dart';
+import '../widgets/news_cards_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -39,106 +40,17 @@ class _HomeScreenState extends State<HomeScreen> {
                           "images/panel1.png",
                           fit: BoxFit.contain,
                         )),
-                    Text("Stany krwi"),
+                    Text("Stany krwi", style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold)),
                     SizedBox(),
-                    Divider(color: Color(0xFFDA4148)),
+                    Divider(color: Color(0xFFDA4148), thickness: 2),
                     Container(
                         color: Colors.white,
                         child: model.state == ViewState.busy
                             ? const Center(child: CircularProgressIndicator())
                             : BloodDropsStateWidget(model.getBloodLevels())),
+                    NewsCardsWidget(),
                   ],
                 ),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              ExpansionTileCard(
-                baseColor: Colors.cyan[50],
-                expandedColor: Colors.red[50],
-                leading:
-                    CircleAvatar(child: Image.asset("assets/images/devs.jpg")),
-                title: Text("Flutter Dev's"),
-                subtitle: Text("FLUTTER DEVELOPMENT COMPANY"),
-                children: <Widget>[
-                  Divider(
-                    thickness: 1.0,
-                    height: 1.0,
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16.0,
-                        vertical: 8.0,
-                      ),
-                      child: Text(
-                        "FlutterDevs specializes in creating cost-effective and efficient applications with our perfectly crafted,"
-                        " creative and leading-edge flutter app development solutions for customers all around the globe.",
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              ExpansionTileCard(
-                baseColor: Colors.cyan[50],
-                expandedColor: Colors.red[50],
-                leading:
-                    CircleAvatar(child: Image.asset("assets/images/devs.jpg")),
-                title: Text("Flutter Dev's"),
-                subtitle: Text("FLUTTER DEVELOPMENT COMPANY"),
-                children: <Widget>[
-                  Divider(
-                    thickness: 1.0,
-                    height: 1.0,
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16.0,
-                        vertical: 8.0,
-                      ),
-                      child: Text(
-                        "FlutterDevs specializes in creating cost-effective and efficient applications with our perfectly crafted,"
-                        " creative and leading-edge flutter app development solutions for customers all around the globe.",
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              ExpansionTileCard(
-                baseColor: Colors.cyan[50],
-                expandedColor: Colors.red[50],
-                leading:
-                    CircleAvatar(child: Image.asset("assets/images/devs.jpg")),
-                title: Text("Flutter Dev's"),
-                subtitle: Text("FLUTTER DEVELOPMENT COMPANY"),
-                children: <Widget>[
-                  Divider(
-                    thickness: 1.0,
-                    height: 1.0,
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16.0,
-                        vertical: 8.0,
-                      ),
-                      child: Text(
-                        "FlutterDevs specializes in creating cost-effective and efficient applications with our perfectly crafted,"
-                        " creative and leading-edge flutter app development solutions for customers all around the globe.",
-                      ),
-                    ),
-                  ),
-                ],
               ),
             ],
           ),

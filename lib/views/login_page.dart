@@ -138,7 +138,7 @@ class _LoginScreenState extends State<LoginScreen> with InputValidationMixin {
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontSize: 14, color: Colors.white)),
-                            const SizedBox(height: 70),
+                            const SizedBox(height: 50),
                             const Text("Chcesz zostać dawcą krwi?",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(

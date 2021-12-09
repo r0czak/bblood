@@ -17,7 +17,7 @@ class CustomDialogWidget extends StatelessWidget{
     return Stack(
       children: [
         Container(
-          padding: EdgeInsets.only(top: 30, bottom: 15, left: 15, right: 15),
+          padding: EdgeInsets.only(top: 30, bottom: 15, left: 10, right: 10),
           margin: EdgeInsets.only(top:15),
           decoration: BoxDecoration(
             image: DecorationImage(

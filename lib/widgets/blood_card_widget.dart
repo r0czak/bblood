@@ -34,7 +34,7 @@ class CardWidget extends StatelessWidget {
         children: [
           const SizedBox(height: 20),
           Text(type,
-              style: const TextStyle(color: Colors.white, fontSize: 23)),
+              style: const TextStyle(color: Colors.white, fontSize: 20)),
           const SizedBox(height: 25),
           Text(amount + " ml",
               style: const TextStyle(
@@ -43,10 +43,10 @@ class CardWidget extends StatelessWidget {
                   fontWeight: FontWeight.bold)),
           const SizedBox(height: 25),
           Text("Następna donacja za " + nextDonation + " dni",
-              style: const TextStyle(color: Colors.white, fontSize: 13)),
+              style: const TextStyle(color: Colors.white, fontSize: 12)),
           const SizedBox(height: 5),
           Text(countNextDonation() + " r.",
-              style: const TextStyle(color: Colors.white, fontSize: 13)),
+              style: const TextStyle(color: Colors.white, fontSize: 12)),
         ],
       ),
     );

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../locator.dart';
 import '../services/auth_service.dart';
 import '../views/honory_card_page.dart';
+import '../views/user_profile_data.dart';
 
 class UserProfileScreen extends StatefulWidget {
   const UserProfileScreen({Key? key}) : super(key: key);
@@ -32,8 +33,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       });
   }
    */
-  var _toggled = true;
-  var _toggled2 = true;
+  var _toggled = false;
+  var _toggled2 = false;
 
   @override
   Widget build(BuildContext context) {
@@ -124,7 +125,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         title: Text("Dane szczegółowe dawcy"),
                         trailing: Icon(Icons.keyboard_arrow_right),
                         onTap: () {
-                          //create formula for specific donor data
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => UserProfileData()),
+                          );
                         },
                       ),
                       Container(
@@ -158,9 +162,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       ),
                     ],
                   )),
-              const SizedBox(height: 30),
+              const SizedBox(height: 20),
               Text("Notyfikacje"),
-              const SizedBox(height: 10),
               SwitchListTile(
                 value: _toggled,
                 title: Text("Powiadomienia donacji krwi"),
@@ -175,7 +178,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   setState(() => _toggled2 = value);
                 },
               ),
-              const SizedBox(height: 50),
+              const SizedBox(height: 30),
               logoutButton,
             ]),
       ),
