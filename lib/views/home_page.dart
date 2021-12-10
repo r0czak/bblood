@@ -1,6 +1,5 @@
 import 'package:bblood/enums/view_state.dart';
 import 'package:bblood/viewmodels/home_view_model.dart';
-import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
@@ -24,10 +23,10 @@ class _HomeScreenState extends State<HomeScreen> {
       viewModelBuilder: () => HomeViewModel(),
       onModelReady: (model) async {
         String locationId = await model.getUserLocationId();
-        await model.readNewsInfo();
         if (locationId.isNotEmpty) {
           await model.readBloodLevels(locationId);
         }
+        await model.readNewsInfo();
       },
       builder: (context, model, child) => Scaffold(
         backgroundColor: const Color(0xFFEDEDED),
@@ -51,17 +50,20 @@ class _HomeScreenState extends State<HomeScreen> {
                     Divider(color: Color(0xFFDA4148), thickness: 2),
                     Container(
                         color: Colors.white,
-                        child: model.state == ViewState.busy
+                        child: model.state == ViewState.busy ||
+                                !model.checkBloodLevels()
                             ? const Center(child: CircularProgressIndicator())
                             : BloodDropsStateWidget(model.getBloodLevels())),
                     SizedBox(height: 40),
-                    Text("Aktualności", style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold)),
+                    Text("Aktualności",
+                        style: TextStyle(
+                            fontSize: 19, fontWeight: FontWeight.bold)),
                     Divider(color: Color(0xFFDA4148), thickness: 2),
                     Container(
                         //color: Color(0xFFEDEDED),
                         child: model.state == ViewState.busy
                             ? const Center(child: CircularProgressIndicator())
-                            : NewsCardsWidget(model.getNews(), model)),
+                            : NewsCardsWidget(model.getNews())),
                   ],
                 ),
               ),

@@ -13,7 +13,7 @@ class HomeViewModel extends BaseModel {
   final _authService = locator<AuthService>();
   final _firestoreService = locator<FirestoreService>();
   final _firebaseStorageService = locator<FirebaseStorageService>();
-  late BloodLevelsModel levels;
+  BloodLevelsModel? levels;
   late List<NewsInfoModel> news;
 
   Future readBloodLevels(String locationID) async {
@@ -24,7 +24,16 @@ class HomeViewModel extends BaseModel {
   }
 
   BloodLevelsModel getBloodLevels() {
-    return levels;
+    return levels!;
+  }
+
+  bool checkBloodLevels(){
+    if (levels == null){
+      return false;
+    }
+    else{
+      return true;
+    }
   }
 
   Future readNewsInfo() async {

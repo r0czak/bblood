@@ -7,7 +7,7 @@ import 'package:stacked/stacked.dart';
 import '../locator.dart';
 import '../services/auth_service.dart';
 import '../viewmodels/user_profile_view_model.dart';
-import '../views/honory_card_page.dart';
+import '../views/honorary_card_page.dart';
 import '../views/user_profile_data.dart';
 
 class UserProfileScreen extends StatefulWidget {

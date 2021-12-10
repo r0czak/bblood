@@ -70,7 +70,7 @@ class _UserProfileDataState extends State<UserProfileData> {
                           title: model.state == ViewState.idle
                               ? Text(user!.firstName! + " " + user!.lastName!,
                                   style: TextStyle(fontSize: 24))
-                              : Text("2"),
+                              : Text(""),
                         ),
                       ),
                       const SizedBox(height: 20),
@@ -80,7 +80,7 @@ class _UserProfileDataState extends State<UserProfileData> {
                               "781292357",
                               user!.peselNumber!,
                               user!.email!)
-                          : UserInformationContainer("2", "3", "4", "5"),
+                          : UserInformationContainer("", "", "", ""),
                       const SizedBox(height: 20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
