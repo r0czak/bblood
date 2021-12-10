@@ -19,7 +19,6 @@ class _MapScreenState extends State<MapScreen> {
   Completer<GoogleMapController> _controller = Completer();
 
   late List<LocationsModel> locations;
-
   LocationsModel? _selectedLocation;
 
   //final CameraPosition _position; = CameraPosition(target: LatLng(_selectedLocation!.lat, _selectedLocation!.lng), zoom: 15);
@@ -55,6 +54,13 @@ class _MapScreenState extends State<MapScreen> {
         onModelReady: (model) async {
           await model.readLocations();
           locations = model.getLocations();
+          if (await model.isLocationSet()) {
+            String locationName = await model.getUserLocation();
+            _selectedLocation = locations
+                .where((element) => element.name == locationName)
+                .first;
+            _changeCameraPosition(_selectedLocation, model);
+          }
         },
         builder: (context, model, child) => Scaffold(
             backgroundColor: const Color(0xFFEDEDED),
@@ -75,6 +81,7 @@ class _MapScreenState extends State<MapScreen> {
                           : DropdownButtonHideUnderline(
                               child: DropdownButton<LocationsModel>(
                                 isExpanded: true,
+                                value: _selectedLocation,
                                 items: locations.map((LocationsModel location) {
                                   return DropdownMenuItem<LocationsModel>(
                                     value: location,
@@ -92,7 +99,6 @@ class _MapScreenState extends State<MapScreen> {
                                   //});
                                   //_changeCameraPosition(value);
                                 },
-                                value: _selectedLocation,
                               ),
                             ),
                     ),
@@ -143,15 +149,7 @@ class _MapScreenState extends State<MapScreen> {
         builder: (BuildContext bc) {
           return Container(
             height: MediaQuery.of(context).size.height * .50,
-            padding: EdgeInsets.all(10),
-            // decoration: BoxDecoration(
-            //   image: DecorationImage(
-            //     image: AssetImage(_selectedLocation!.logo),
-            //     colorFilter: ColorFilter.mode(
-            //         Color(0xFFEDEDED).withOpacity(0.9), BlendMode.srcOver),
-            //     fit: BoxFit.fill,
-            //   ),
-            // ),
+            padding: const EdgeInsets.all(10),
             child: Column(children: <Widget>[
               SizedBox(
                   width: 400,

@@ -1,6 +1,5 @@
 import 'package:bblood/enums/view_state.dart';
 import 'package:bblood/viewmodels/home_view_model.dart';
-import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
@@ -23,7 +22,9 @@ class _HomeScreenState extends State<HomeScreen> {
     return ViewModelBuilder<HomeViewModel>.reactive(
       viewModelBuilder: () => HomeViewModel(),
       onModelReady: (model) async {
-        await model.readBloodLevels('rsf0xWMRrSdITScqa9DZ');
+        String locationId = await model.getUserLocationId();
+
+        await model.readBloodLevels(locationId);
       },
       builder: (context, model, child) => Scaffold(
         backgroundColor: const Color(0xFFEDEDED),
@@ -40,7 +41,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           "images/panel1.png",
                           fit: BoxFit.contain,
                         )),
-                    Text("Stany krwi", style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold)),
+                    Text("Stany krwi",
+                        style: TextStyle(
+                            fontSize: 19, fontWeight: FontWeight.bold)),
                     SizedBox(),
                     Divider(color: Color(0xFFDA4148), thickness: 2),
                     Container(

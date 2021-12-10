@@ -3,6 +3,7 @@ import 'package:bblood/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../models/locations_model.dart';
+import '../models/user_donations_model.dart';
 import '../models/user_location_model.dart';
 
 class FirestoreService {
@@ -17,12 +18,18 @@ class FirestoreService {
 
   Future createUser(User user) async {
     try {
+      UserDonationsModel donations = UserDonationsModel.empty();
       await _usersCollectionReference.doc(user.uid).set(user.toMap());
       await _usersCollectionReference
           .doc(user.uid)
           .collection('info')
           .doc('location')
           .set(UserLocationModel(location_id: "").toMap());
+      await _usersCollectionReference
+          .doc(user.uid)
+          .collection('info')
+          .doc('donations')
+          .set(donations.toMap());
       //await _usersCollectionReference.add(user.toMap());
     } catch (e) {
       rethrow;
@@ -61,5 +68,73 @@ class FirestoreService {
     } catch (e) {
       rethrow;
     }
+  }
+
+  Future<LocationsModel> getLocation(String locationIn) async {
+    try {
+      var result = await FirebaseFirestore.instance
+          .collection("locations")
+          .doc(locationIn)
+          .get();
+
+      return LocationsModel.fromMap(result.data());
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<UserLocationModel> getUserLocationId(String uid) async {
+    try {
+      var result = await FirebaseFirestore.instance
+          .collection("users")
+          .doc(uid)
+          .collection("info")
+          .doc("location")
+          .get();
+
+      return UserLocationModel.fromMap(result.data());
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  void setUserLocation(String uid, String locationId) {
+    try {
+      DocumentReference result = FirebaseFirestore.instance
+          .collection("users")
+          .doc(uid)
+          .collection("info")
+          .doc("location");
+
+      UserLocationModel location = UserLocationModel(location_id: locationId);
+      result.set(location.toMap());
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<UserDonationsModel> getUserDonations(String uid) async {
+    try {
+      var result = await FirebaseFirestore.instance
+          .collection("users")
+          .doc(uid)
+          .collection("info")
+          .doc("donations")
+          .get();
+
+      return UserDonationsModel.fromMap(result.data());
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  void updateUserBloodType(String uid, String bloodType) {
+    DocumentReference result = FirebaseFirestore.instance
+        .collection("users")
+        .doc(uid)
+        .collection("info")
+        .doc("donations");
+
+    result.update({"blood_type": bloodType});
   }
 }
