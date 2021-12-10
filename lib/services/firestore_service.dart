@@ -1,4 +1,5 @@
 import 'package:bblood/models/blood_levels_model.dart';
+import 'package:bblood/models/news_info_model.dart';
 import 'package:bblood/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -86,6 +87,22 @@ class FirestoreService {
     }
   }
 
+  Future<String> getLocationIdbyName(String locationName) async {
+    try {
+      QuerySnapshot result = await _locationsCollectionReference.get();
+      List<DocumentSnapshot> documents = result.docs;
+
+      for (var data in documents) {
+        if (LocationsModel.fromMap(data).name == locationName) {
+          return data.id;
+        }
+      }
+      return documents.first.id;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<UserLocationModel> getUserLocationId(String uid) async {
     try {
       var result = await FirebaseFirestore.instance
@@ -101,7 +118,7 @@ class FirestoreService {
     }
   }
 
-  void setUserLocation(String uid, String locationId) {
+  void updateUserLocation(String uid, String locationId) {
     try {
       DocumentReference result = FirebaseFirestore.instance
           .collection("users")

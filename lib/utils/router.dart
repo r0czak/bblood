@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../views/login_page.dart';
 import '../views/registration_page.dart';
-import '../views/user_profile_view.dart';
+import '../views/user_profile_page.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {

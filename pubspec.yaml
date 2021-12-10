@@ -50,7 +50,7 @@ dependencies:
   firebase_storage: ^10.2.3
   expandable: ^5.0.1
   image_picker: ^0.8.4+4
-  path_provider: ^2.0.7
+  path_provider: ^2.0.8
   gallery_view: ^1.0.0+1
 
 

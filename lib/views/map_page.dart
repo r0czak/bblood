@@ -55,7 +55,7 @@ class _MapScreenState extends State<MapScreen> {
           await model.readLocations();
           locations = model.getLocations();
           if (await model.isLocationSet()) {
-            String locationName = await model.getUserLocation();
+            String locationName = await model.getUserLocationName();
             _selectedLocation = locations
                 .where((element) => element.name == locationName)
                 .first;

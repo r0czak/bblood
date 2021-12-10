@@ -34,7 +34,7 @@ class MapViewModel extends BaseModel {
     return imageUrl;
   }
 
-  Future<String> getUserLocation() async {
+  Future<String> getUserLocationName() async {
     UserLocationModel locationId = await _firestoreService
         .getUserLocationId(_authService.currentUser.uid!);
     if (locationId.location_id!.isNotEmpty) {
