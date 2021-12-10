@@ -1,8 +1,10 @@
 import 'package:bblood/models/user_model.dart';
-import 'package:bblood/viewmodels/user_profile_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+
+import '../enums/view_state.dart';
+import '../viewmodels/user_profile_data_view_model.dart';
 
 class UserProfileData extends StatefulWidget {
   const UserProfileData({Key? key}) : super(key: key);
@@ -12,7 +14,7 @@ class UserProfileData extends StatefulWidget {
 }
 
 class _UserProfileDataState extends State<UserProfileData> {
-  late User user;
+  User? user;
 
   var items = [
     'A Rh+',
@@ -29,10 +31,14 @@ class _UserProfileDataState extends State<UserProfileData> {
 
   @override
   Widget build(BuildContext context) {
-    return ViewModelBuilder<UserProfileModel>.reactive(
-        viewModelBuilder: () => UserProfileModel(),
+    return ViewModelBuilder<UserProfileDataViewModel>.reactive(
+        viewModelBuilder: () => UserProfileDataViewModel(),
         onModelReady: (model) async {
           user = await model.getUser();
+          String tempBloodType = await model.getUserBloodType();
+          if (tempBloodType.isNotEmpty) {
+            _selectedBloodType = tempBloodType;
+          }
         },
         builder: (context, model, child) => Scaffold(
               backgroundColor: const Color(0xFFEDEDED),
@@ -58,17 +64,23 @@ class _UserProfileDataState extends State<UserProfileData> {
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      const Card(
+                      Card(
                         elevation: 5,
                         child: ListTile(
-                          title: Text("Jan Kowalski",
-                              style: TextStyle(fontSize: 24)),
+                          title: model.state == ViewState.idle
+                              ? Text(user!.firstName! + " " + user!.lastName!,
+                                  style: TextStyle(fontSize: 24))
+                              : Text(""),
                         ),
                       ),
                       const SizedBox(height: 20),
-                      //user data here:
-                      UserInformationContainer("12.01.1999", "123456789",
-                          "user.peselNumber!", "jan@mail.com"),
+                      model.state == ViewState.idle
+                          ? UserInformationContainer(
+                              model.dateToString(user!.birthday!.toDate()),
+                              "781292357",
+                              user!.peselNumber!,
+                              user!.email!)
+                          : UserInformationContainer("", "", "", ""),
                       const SizedBox(height: 20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -79,6 +91,7 @@ class _UserProfileDataState extends State<UserProfileData> {
                               ignoring: false,
                               child: DropdownButton<String>(
                                 isExpanded: true,
+                                value: _selectedBloodType,
                                 items: items.map((String item) {
                                   return DropdownMenuItem<String>(
                                     value: item,
@@ -91,7 +104,6 @@ class _UserProfileDataState extends State<UserProfileData> {
                                     _selectedBloodType = value;
                                   });
                                 },
-                                value: _selectedBloodType,
                               ),
                             ),
                           ),
@@ -101,7 +113,10 @@ class _UserProfileDataState extends State<UserProfileData> {
                             child: MaterialButton(
                               padding: const EdgeInsets.all(15),
                               onPressed: () {
-                                setBloodType();
+                                if (_selectedBloodType!.isNotEmpty) {
+                                  model
+                                      .updateUserBloodType(_selectedBloodType!);
+                                }
                               },
                               child: const Text(
                                 "Zapisz",
@@ -116,13 +131,6 @@ class _UserProfileDataState extends State<UserProfileData> {
                     ]),
               ),
             ));
-  }
-
-  void setBloodType() {
-    setState(() {
-      state = true;
-    });
-    //state = true;
   }
 
   Widget UserInformationContainer(

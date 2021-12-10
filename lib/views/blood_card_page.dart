@@ -51,7 +51,9 @@ class _BloodCardScreenState extends State<BloodCardScreen> {
                             Row(
                               children: [
                                 Text(
-                                    model.state == ViewState.busy
+                                    model.state == ViewState.busy ||
+                                            donations!.last_donation_date ==
+                                                null
                                         ? ""
                                         : model.dateToString(donations!
                                             .last_donation_date!
@@ -63,15 +65,17 @@ class _BloodCardScreenState extends State<BloodCardScreen> {
                               height: 5,
                             ),
                             Text(
-                                model.state == ViewState.busy
-                                    ? ""
+                                model.state == ViewState.busy ||
+                                        donations!.last_donation_type!.isEmpty
+                                    ? "Brak oddanej krwi"
                                     : donations!.last_donation_type!,
                                 style: TextStyle(fontSize: 20)),
                             SizedBox(
                               height: 10,
                             ),
                             Text(
-                                model.state == ViewState.busy
+                                model.state == ViewState.busy ||
+                                        donations!.last_donation_amt! == 0
                                     ? ""
                                     : donations!.last_donation_amt!.toString() +
                                         "ml",
