@@ -102,8 +102,7 @@ class CardWidget extends StatelessWidget {
   String countOfDays(DateTime date) {
     final dateNow = DateTime.now();
     final difference = date.difference(dateNow);
-
-    return difference.toString();
+    return difference.inDays.toString();
   }
 
   Widget buildCard(String type, int amount, String nextDonation, DateTime date,
@@ -145,28 +144,34 @@ class CardWidget extends StatelessWidget {
           buildCard(
               'Krew pełna',
               donations.whole_blood_amt!,
-              '40',
+              countOfDays(countNextDonation(donations.last_donation_type!,
+                  donations.last_donation_date!.toDate(), "Krew pełna")),
               countNextDonation(donations.last_donation_type!,
                   donations.last_donation_date!.toDate(), "Krew pełna"),
               0xffda4148),
           buildCard(
               'Osocze',
               donations.plasma_amt!,
-              '15',
+              countOfDays(countNextDonation(donations.last_donation_type!,
+                  donations.last_donation_date!.toDate(), "Osocze")),
               countNextDonation(donations.last_donation_type!,
                   donations.last_donation_date!.toDate(), "Osocze"),
               0xfff0c631),
           buildCard(
               'Płytki krwi',
               donations.platelets_amt!,
-              '34',
+              countOfDays(countNextDonation(donations.last_donation_type!,
+                  donations.last_donation_date!.toDate(), "Płytki krwi")),
               countNextDonation(donations.last_donation_type!,
                   donations.last_donation_date!.toDate(), "Płytki Krwi"),
               0xffff8f61),
           buildCard(
               'Krwinki czerwone 1j.',
               donations.red_cells_1_amt!,
-              '34',
+              countOfDays(countNextDonation(
+                  donations.last_donation_type!,
+                  donations.last_donation_date!.toDate(),
+                  "Krwinki czerwone 1j.")),
               countNextDonation(
                   donations.last_donation_type!,
                   donations.last_donation_date!.toDate(),
@@ -175,7 +180,10 @@ class CardWidget extends StatelessWidget {
           buildCard(
               'Krwinki czerwone 2j.',
               donations.red_cells_2_amt!,
-              '34',
+              countOfDays(countNextDonation(
+                  donations.last_donation_type!,
+                  donations.last_donation_date!.toDate(),
+                  "Krwinki czerwone 2j.")),
               countNextDonation(
                   donations.last_donation_type!,
                   donations.last_donation_date!.toDate(),
@@ -184,14 +192,18 @@ class CardWidget extends StatelessWidget {
           buildCard(
               'Krwinki białe',
               donations.white_cells_amt!,
-              '34',
+              countOfDays(countNextDonation(donations.last_donation_type!,
+                  donations.last_donation_date!.toDate(), "Krwinki białe")),
               countNextDonation(donations.last_donation_type!,
                   donations.last_donation_date!.toDate(), "Krwinki białe"),
               0xff5a65ff),
           buildCard(
               'Płytki krwi i osocze',
               donations.plasma_platelets_amt!,
-              '34',
+              countOfDays(countNextDonation(
+                  donations.last_donation_type!,
+                  donations.last_donation_date!.toDate(),
+                  "Płytki krwi i osocze")),
               countNextDonation(
                   donations.last_donation_type!,
                   donations.last_donation_date!.toDate(),

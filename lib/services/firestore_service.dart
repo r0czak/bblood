@@ -40,7 +40,7 @@ class FirestoreService {
     }
   }
 
-  Future getUser(String uid) async {
+  Future<User> getUser(String uid) async {
     try {
       var userData = await _usersCollectionReference.doc(uid).get();
       return User.fromMap(userData.data());
