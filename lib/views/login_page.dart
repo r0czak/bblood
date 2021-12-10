@@ -173,58 +173,5 @@ class _LoginScreenState extends State<LoginScreen> with InputValidationMixin {
                 ),
               ),
             ));
-
-    // return Scaffold(
-    //   backgroundColor: const Color(0xFFDA4148),
-    //   body: Center(
-    //     child: SingleChildScrollView(
-    //       child: Container(
-    //         color: const Color(0xFFDA4148),
-    //         child: Padding(
-    //           padding: const EdgeInsets.all(45.0),
-    //           child: Form(
-    //             key: _formKey,
-    //             child: Column(
-    //               mainAxisAlignment: MainAxisAlignment.center,
-    //               crossAxisAlignment: CrossAxisAlignment.center,
-    //               children: <Widget>[
-    //                 SizedBox(
-    //                     height: 250,
-    //                     child: Image.asset(
-    //                       "images/blood_logo.png",
-    //                       fit: BoxFit.contain,
-    //                     )),
-    //                 /*const Text("Bbold",
-    //                     style: TextStyle(fontSize: 60, color: Colors.white)),*/
-    //                 SizedBox(
-    //                     height: 70,
-    //                     child: Image.asset(
-    //                       "images/app_name.png",
-    //                       fit: BoxFit.contain,
-    //                     )),
-    //                 const SizedBox(height: 30),
-    //                 emailInput,
-    //                 const SizedBox(height: 10),
-    //                 passwordInput,
-    //                 const SizedBox(height: 20),
-    //                 loginButton,
-    //                 const SizedBox(height: 10),
-    //                 const Text("Zapomniałeś hasła? >",
-    //                     textAlign: TextAlign.center,
-    //                     style: TextStyle(fontSize: 14, color: Colors.white)),
-    //                 const SizedBox(height: 70),
-    //                 const Text("Chcesz zostać dawcą krwi?",
-    //                     textAlign: TextAlign.center,
-    //                     style: TextStyle(fontSize: 20, color: Colors.white)),
-    //                 const SizedBox(height: 10),
-    //                 registerButton,
-    //               ],
-    //             ),
-    //           ),
-    //         ),
-    //       ),
-    //     ),
-    //   ),
-    // );
   }
 }

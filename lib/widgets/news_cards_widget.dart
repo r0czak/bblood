@@ -1,9 +1,12 @@
 import 'package:bblood/models/blood_levels_model.dart';
+import 'package:bblood/models/news_info_model.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class NewsCardsWidget extends StatelessWidget {
+  List<NewsInfoModel> news;
+  NewsCardsWidget(this.news);
 
   Widget buildCard(String image, String title, String description) {
     return Container(
@@ -51,8 +54,8 @@ class NewsCardsWidget extends StatelessWidget {
     return Container(
       child: Column (
         children: [
-          buildCard('images/gadgets.png', 'Akcja busa na kampusie Politechniki', 'opis akcji'),
-          buildCard('images/gadgets.png', 'title', 'opis akcji'),
+          for (int i=0; i<news.length; i++)
+            buildCard('images/gadgets.png', news[i].title, news[i].description),
         ],
       ),
     );

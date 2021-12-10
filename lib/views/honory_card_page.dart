@@ -34,7 +34,6 @@ class _HonoryCardScreenState extends State<HonoryCardScreen> {
         ],
       ),
       body: Center(
-        child: SingleChildScrollView(
           child: Container(
             width: 400,
             height: 700,
@@ -88,7 +87,6 @@ class _HonoryCardScreenState extends State<HonoryCardScreen> {
                   SizedBox(height: 50),
                 ]),
           ),
-        ),
       ),
     );
   }

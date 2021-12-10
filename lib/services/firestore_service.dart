@@ -16,6 +16,9 @@ class FirestoreService {
   final CollectionReference _locationsCollectionReference =
       FirebaseFirestore.instance.collection('locations');
 
+  final CollectionReference _newsInfoCollectionReference =
+      FirebaseFirestore.instance.collection('news');
+
   Future createUser(User user) async {
     try {
       UserDonationsModel donations = UserDonationsModel.empty();
@@ -136,5 +139,20 @@ class FirestoreService {
         .doc("donations");
 
     result.update({"blood_type": bloodType});
+  }
+
+  Future<List<NewsInfoModel>> getNewsInfo() async {
+    try {
+      QuerySnapshot result = await _newsInfoCollectionReference.get();
+      List<DocumentSnapshot> documents = result.docs;
+
+      List<NewsInfoModel> newsInfo = <NewsInfoModel>[];
+      documents.forEach((data) {
+        newsInfo.add(NewsInfoModel.fromMap(data));
+      });
+      return newsInfo;
+    } catch (e) {
+      rethrow;
+    }
   }
 }
