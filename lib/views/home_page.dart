@@ -23,8 +23,9 @@ class _HomeScreenState extends State<HomeScreen> {
       viewModelBuilder: () => HomeViewModel(),
       onModelReady: (model) async {
         String locationId = await model.getUserLocationId();
-
-        await model.readBloodLevels(locationId);
+        if (locationId.isNotEmpty) {
+          await model.readBloodLevels(locationId);
+        }
       },
       builder: (context, model, child) => Scaffold(
         backgroundColor: const Color(0xFFEDEDED),
