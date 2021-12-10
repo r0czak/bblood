@@ -12,4 +12,14 @@ class FirebaseStorageService {
 
     return downloadUrl;
   }
+
+  final Reference _newsImagesReference =
+    FirebaseStorage.instance.ref('news');
+
+  Future getNewsImageURL(String image) async {
+    String downloadUrl =
+    await _newsImagesReference.child(image).getDownloadURL();
+
+    return downloadUrl;
+  }
 }

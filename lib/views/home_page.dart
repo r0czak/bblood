@@ -61,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         //color: Color(0xFFEDEDED),
                         child: model.state == ViewState.busy
                             ? const Center(child: CircularProgressIndicator())
-                            : NewsCardsWidget(model.getNews())),
+                            : NewsCardsWidget(model.getNews(), model)),
                   ],
                 ),
               ),
