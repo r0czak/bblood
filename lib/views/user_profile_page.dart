@@ -1,9 +1,14 @@
+import 'package:bblood/enums/view_state.dart';
+import 'package:bblood/models/locations_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:stacked/stacked.dart';
 
 import '../locator.dart';
 import '../services/auth_service.dart';
+import '../viewmodels/user_profile_view_model.dart';
 import '../views/honory_card_page.dart';
+import '../views/user_profile_data.dart';
 
 class UserProfileScreen extends StatefulWidget {
   const UserProfileScreen({Key? key}) : super(key: key);
@@ -13,32 +18,16 @@ class UserProfileScreen extends StatefulWidget {
 }
 
 class _UserProfileScreenState extends State<UserProfileScreen> {
-  final _formKey = GlobalKey<FormState>();
+  var _toggled = false;
+  var _toggled2 = false;
 
-  /*
-  User? user = FirebaseAuth.instance.currentUser;
-  UserInfoModel userData = UserInfoModel();
+  final authService = locator<AuthService>();
 
-  @override
-  void initState(){
-    super.initState();
-    FirebaseFirestore.instance
-      .collection("users")
-      .doc(user!.uid)
-      .get()
-      .then((value) {
-        userData = UserInfoModel.fromMap(value.data());
-        setState(() {});
-      });
-  }
-   */
-  var _toggled = true;
-  var _toggled2 = true;
+  late List<LocationsModel> locations;
+  LocationsModel? _selectedLocation;
 
   @override
   Widget build(BuildContext context) {
-    final authService = locator<AuthService>();
-
     final honorCard = Material(
       elevation: 4,
       borderRadius: BorderRadius.circular(10),
@@ -77,44 +66,47 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       ),
     );
 
-    return Scaffold(
-      //backgroundColor: const Color(0xFFDA4148),
-      backgroundColor: const Color(0xFFEDEDED),
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text("Profil dawcy"),
-        backgroundColor: Color(0xFFDA4148),
-        actions: <Widget>[
-          Padding(
-              padding: EdgeInsets.only(right: 20.0),
-              child: GestureDetector(
-                onTap: () {},
-                child: const Icon(
-                  Icons.person,
-                  color: Colors.white,
-                  size: 35.0,
-                ),
-              )),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Column(
+    return ViewModelBuilder<UserProfileModel>.reactive(
+      viewModelBuilder: () => UserProfileModel(),
+      onModelReady: (model) async {
+        await model.readLocations();
+        locations = model.getLocations();
+        if (await model.isLocationSet()) {
+          String locationName = await model.getUserLocation();
+          _selectedLocation =
+              locations.where((element) => element.name == locationName).first;
+        }
+      },
+      builder: (context, model, child) => Scaffold(
+        //backgroundColor: const Color(0xFFDA4148),
+        backgroundColor: const Color(0xFFEDEDED),
+        appBar: AppBar(
+          centerTitle: true,
+          title: const Text("Profil dawcy"),
+          backgroundColor: Color(0xFFDA4148),
+          actions: <Widget>[
+            Padding(
+                padding: EdgeInsets.only(right: 20.0),
+                child: GestureDetector(
+                  onTap: () {},
+                  child: const Icon(
+                    Icons.person,
+                    color: Colors.white,
+                    size: 35.0,
+                  ),
+                )),
+          ],
+        ),
+        body: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              const Card(
-                elevation: 7,
-                margin: const EdgeInsets.all(15),
-                child: ListTile(
-                  title: Text("Jan Kowalski", style: TextStyle(fontSize: 24)),
-                  trailing: Icon(Icons.edit),
-                ),
-              ),
+              SizedBox(height: 15),
               honorCard,
               SizedBox(height: 25),
               Text("Ustawienia"),
               Card(
                   elevation: 4,
-                  margin: const EdgeInsets.fromLTRB(15, 10, 15, 10),
+                  margin: const EdgeInsets.all(10),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10)),
                   child: Column(
@@ -124,22 +116,11 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         title: Text("Dane szczegółowe dawcy"),
                         trailing: Icon(Icons.keyboard_arrow_right),
                         onTap: () {
-                          //create formula for specific donor data
-                        },
-                      ),
-                      Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 15),
-                        width: double.infinity,
-                        height: 1,
-                        color: Colors.grey.shade400,
-                      ),
-                      ListTile(
-                        leading:
-                            Icon(Icons.location_on, color: Color(0xFFDA4148)),
-                        title: Text("Zmień lokalizację"),
-                        trailing: Icon(Icons.keyboard_arrow_right),
-                        onTap: () {
-                          //create localization type
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => UserProfileData()),
+                          );
                         },
                       ),
                       Container(
@@ -156,11 +137,53 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           //change password, emails etc.
                         },
                       ),
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 15),
+                        width: double.infinity,
+                        height: 1,
+                        color: Colors.grey.shade400,
+                      ),
+                      const ListTile(
+                        leading:
+                            Icon(Icons.location_on, color: Color(0xFFDA4148)),
+                        title: Text("Wybierz swój punkt RCKiK"),
+                      ),
+                      Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+                        margin: EdgeInsets.fromLTRB(15, 0, 15, 5),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black45, width: 1),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: model.state == ViewState.busy
+                            ? const Center(child: CircularProgressIndicator())
+                            : DropdownButton<LocationsModel>(
+                                value: _selectedLocation,
+                                isExpanded: true,
+                                items: locations.map((LocationsModel location) {
+                                  return DropdownMenuItem<LocationsModel>(
+                                    value: location,
+                                    child: Text(
+                                      location.name,
+                                      style: const TextStyle(
+                                          color: Colors.black, fontSize: 16),
+                                    ),
+                                  );
+                                }).toList(),
+                                onChanged: (LocationsModel? value) {
+                                  setState(() {
+                                    _selectedLocation = value;
+                                    model.updateUserLocation(
+                                        _selectedLocation!.name);
+                                  });
+                                },
+                              ),
+                      ),
                     ],
                   )),
-              const SizedBox(height: 30),
+              const SizedBox(height: 20),
               Text("Notyfikacje"),
-              const SizedBox(height: 10),
               SwitchListTile(
                 value: _toggled,
                 title: Text("Powiadomienia donacji krwi"),
@@ -175,7 +198,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   setState(() => _toggled2 = value);
                 },
               ),
-              const SizedBox(height: 50),
+              const SizedBox(height: 30),
               logoutButton,
             ]),
       ),
