@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:bblood/widgets/photo_gallery_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:devicelocale/devicelocale.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:async';
 
 import 'package:image_picker/image_picker.dart';
@@ -25,6 +26,11 @@ class _ResearchScreenState extends State<ResearchScreen> {
     setState(() {
       this.image = photoTemporary;
     });
+    Fluttertoast.showToast(
+        msg: "Zapisano nowe zdjęcie badań",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+    );
   }
 
   Widget buildButton({
@@ -52,30 +58,22 @@ class _ResearchScreenState extends State<ResearchScreen> {
 
   final List<ImageDetails> _images = [
   ImageDetails(
-  imagePath: 'images/gadgets.png',
-  researchDate: '27.11.2021',
-  title: 'Badanie krwi',
-  details:
-  'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil error aspernatur,',
-  ),
-  ImageDetails(
-  imagePath: 'images/rckik.png',
+    imagePath: 'images/research_card2.png',
     researchDate: '27.11.2021',
     title: 'Badanie krwi',
-  details:
-  'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil error aspernatur, sequi inventore eligendi vitae dolorem animi suscipit. Nobis, cumque.',
+    details:
+    'Wynik badań prawidłowy, brak przeciwskazań / ',
   ),
   ImageDetails(
-    imagePath: 'images/rckik_logo_cracow.png',
-    researchDate: '27.11.2021',
-    title: 'Badanie krwi',
+    imagePath: 'images/resaerch_card.png',
+      researchDate: '27.11.2021',
+      title: 'Badanie krwi',
     details:
     'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil error aspernatur, sequi inventore eligendi vitae dolorem animi suscipit. Nobis, cumque.',
   )];
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: const Color(0xFFEDEDED),
       body: Center(
@@ -83,16 +81,20 @@ class _ResearchScreenState extends State<ResearchScreen> {
             padding: const EdgeInsets.all(20),
                 child: Column(
                   children: <Widget>[
-                    const SizedBox(height: 30),
+                    const SizedBox(height: 15),
                     const Text('Badania krwi',
                       style: TextStyle(
                         fontSize: 25,
                         fontWeight: FontWeight.w600,
-                        color: Colors.red,
+                        color: Color(0xFFDA4148),
                       ),
-                      textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 20),
+                    const Text('Lista badań',
+                      style: TextStyle(
+                        fontSize: 17,
+                      ),
+                    ),
                     Expanded(
                       child: Container(
                         padding: EdgeInsets.all(10),

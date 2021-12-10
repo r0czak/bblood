@@ -18,7 +18,7 @@ class CardWidget extends StatelessWidget {
 /*
   String countOfDays(){
     final date = DateTime.now();
-    final difference = date.difference(tempDateTime());
+    final difference = date.difference(tempDateTime());`
     final result = DateFormat.jm();
     return result.format(difference);
   }

@@ -24,6 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
       viewModelBuilder: () => HomeViewModel(),
       onModelReady: (model) async {
         await model.readBloodLevels('rsf0xWMRrSdITScqa9DZ');
+        await model.readNewsInfo();
       },
       builder: (context, model, child) => Scaffold(
         backgroundColor: const Color(0xFFEDEDED),
@@ -41,14 +42,20 @@ class _HomeScreenState extends State<HomeScreen> {
                           fit: BoxFit.contain,
                         )),
                     Text("Stany krwi", style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold)),
-                    SizedBox(),
                     Divider(color: Color(0xFFDA4148), thickness: 2),
                     Container(
                         color: Colors.white,
                         child: model.state == ViewState.busy
                             ? const Center(child: CircularProgressIndicator())
                             : BloodDropsStateWidget(model.getBloodLevels())),
-                    NewsCardsWidget(),
+                    SizedBox(height: 40),
+                    Text("Aktualności", style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold)),
+                    Divider(color: Color(0xFFDA4148), thickness: 2),
+                    Container(
+                        //color: Color(0xFFEDEDED),
+                        child: model.state == ViewState.busy
+                            ? const Center(child: CircularProgressIndicator())
+                            : NewsCardsWidget(model.getNews())),
                   ],
                 ),
               ),

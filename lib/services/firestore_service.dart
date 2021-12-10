@@ -1,4 +1,5 @@
 import 'package:bblood/models/blood_levels_model.dart';
+import 'package:bblood/models/news_info_model.dart';
 import 'package:bblood/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -14,6 +15,9 @@ class FirestoreService {
 
   final CollectionReference _locationsCollectionReference =
       FirebaseFirestore.instance.collection('locations');
+
+  final CollectionReference _newsInfoCollectionReference =
+      FirebaseFirestore.instance.collection('news');
 
   Future createUser(User user) async {
     try {
@@ -58,6 +62,21 @@ class FirestoreService {
       }
 
       return locations;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<NewsInfoModel>> getNewsInfo() async {
+    try {
+      QuerySnapshot result = await _newsInfoCollectionReference.get();
+      List<DocumentSnapshot> documents = result.docs;
+
+      List<NewsInfoModel> newsInfo = <NewsInfoModel>[];
+      documents.forEach((data) {
+        newsInfo.add(NewsInfoModel.fromMap(data));
+      });
+      return newsInfo;
     } catch (e) {
       rethrow;
     }

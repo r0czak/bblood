@@ -47,7 +47,7 @@ class PhotoViewWidget extends StatelessWidget {
                         Text(
                           title,
                           style: TextStyle(
-                            color: Colors.red,
+                            color: Color(0xFFDA4148),
                             fontSize: 22,
                             fontWeight: FontWeight.w600,
                           ),
@@ -67,28 +67,19 @@ class PhotoViewWidget extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: FlatButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          padding: EdgeInsets.all(15),
-                          color: Colors.red,
-                          child: Text('Back',
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                      minimumSize: Size.fromHeight(50),
+                      primary: Color(0xFFDA4148),
+                      onPrimary: Colors.white,
+                      textStyle: TextStyle(fontSize: 18),
                       ),
-                      SizedBox(
-                        width: 15,
-                      ),
+                      child: Text("Wróc do listy badań"),
+                      onPressed: (){
+                        Navigator.pop(context);
+                      },
+                  ),
                     ],
-                  )
-                ],
               ),
             ),
           ],

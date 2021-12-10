@@ -144,14 +144,6 @@ class _MapScreenState extends State<MapScreen> {
           return Container(
             height: MediaQuery.of(context).size.height * .50,
             padding: EdgeInsets.all(10),
-            // decoration: BoxDecoration(
-            //   image: DecorationImage(
-            //     image: AssetImage(_selectedLocation!.logo),
-            //     colorFilter: ColorFilter.mode(
-            //         Color(0xFFEDEDED).withOpacity(0.9), BlendMode.srcOver),
-            //     fit: BoxFit.fill,
-            //   ),
-            // ),
             child: Column(children: <Widget>[
               SizedBox(
                   width: 400,
@@ -183,31 +175,36 @@ class _MapScreenState extends State<MapScreen> {
               Align(
                   alignment: Alignment.centerLeft,
                   child: Container(
-                    child: Text(
+                    child: Text("Adres: " +
                       _selectedLocation!.address,
                       textAlign: TextAlign.left,
                       style: const TextStyle(fontSize: 18),
                     ),
                   )),
               const SizedBox(
-                height: 8,
+                height: 15,
               ),
-
               Align(
                   alignment: Alignment.centerLeft,
                   child: Container(
                     child: Text(
-                      "Telefon: " + _selectedLocation!.phone,
+                      "Kontakt telefoniczny: " + _selectedLocation!.phone,
                       textAlign: TextAlign.left,
                       style: const TextStyle(fontSize: 15),
                     ),
                   )),
-
-              //Text(_selectedLocation!.place, style: TextStyle(fontSize: 15)),
               const SizedBox(height: 15),
+              Align(
+                  alignment: Alignment.centerLeft,
+                  child: Container(
+                    child: Text("Dni otwarcia punktu RCKiK: ",
+                        style: const TextStyle(fontSize: 15)),
+                    ),
+                  ),
+              SizedBox(height: 5),
               Text(_selectedLocation!.open,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 12)),
+                  style: const TextStyle(fontSize: 15)),
             ]),
           );
         });

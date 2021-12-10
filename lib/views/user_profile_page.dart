@@ -1,5 +1,9 @@
+import 'package:bblood/enums/view_state.dart';
+import 'package:bblood/models/locations_model.dart';
+import 'package:bblood/viewmodels/map_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:stacked/stacked.dart';
 
 import '../locator.dart';
 import '../services/auth_service.dart';
@@ -14,32 +18,18 @@ class UserProfileScreen extends StatefulWidget {
 }
 
 class _UserProfileScreenState extends State<UserProfileScreen> {
-  final _formKey = GlobalKey<FormState>();
-
-  /*
-  User? user = FirebaseAuth.instance.currentUser;
-  UserInfoModel userData = UserInfoModel();
-
-  @override
-  void initState(){
-    super.initState();
-    FirebaseFirestore.instance
-      .collection("users")
-      .doc(user!.uid)
-      .get()
-      .then((value) {
-        userData = UserInfoModel.fromMap(value.data());
-        setState(() {});
-      });
-  }
-   */
   var _toggled = false;
   var _toggled2 = false;
 
+  final authService = locator<AuthService>();
+  var items = ['Łódź', 'Kraków', 'Warszawa', 'Gdańsk', 'Poznań', 'Wrocław'];
+  var _selectedItem;
+
+  late List<LocationsModel> locations;
+  LocationsModel? _selectedLocation;
+
   @override
   Widget build(BuildContext context) {
-    final authService = locator<AuthService>();
-
     final honorCard = Material(
       elevation: 4,
       borderRadius: BorderRadius.circular(10),
@@ -78,7 +68,13 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       ),
     );
 
-    return Scaffold(
+    return ViewModelBuilder<MapViewModel>.reactive(
+    viewModelBuilder: () => MapViewModel(),
+    onModelReady: (model) async {
+      await model.readLocations();
+      locations = model.getLocations();
+    },
+    builder: (context, model, child) => Scaffold(
       //backgroundColor: const Color(0xFFDA4148),
       backgroundColor: const Color(0xFFEDEDED),
       appBar: AppBar(
@@ -98,24 +94,16 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               )),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
+      body: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              const Card(
-                elevation: 7,
-                margin: const EdgeInsets.all(15),
-                child: ListTile(
-                  title: Text("Jan Kowalski", style: TextStyle(fontSize: 24)),
-                  trailing: Icon(Icons.edit),
-                ),
-              ),
+              SizedBox(height: 15),
               honorCard,
               SizedBox(height: 25),
               Text("Ustawienia"),
               Card(
                   elevation: 4,
-                  margin: const EdgeInsets.fromLTRB(15, 10, 15, 10),
+                  margin: const EdgeInsets.all(10),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10)),
                   child: Column(
@@ -138,12 +126,11 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         color: Colors.grey.shade400,
                       ),
                       ListTile(
-                        leading:
-                            Icon(Icons.location_on, color: Color(0xFFDA4148)),
-                        title: Text("Zmień lokalizację"),
+                        leading: Icon(Icons.settings, color: Color(0xFFDA4148)),
+                        title: Text("Ustawienia konta"),
                         trailing: Icon(Icons.keyboard_arrow_right),
                         onTap: () {
-                          //create localization type
+                          //change password, emails etc.
                         },
                       ),
                       Container(
@@ -152,13 +139,37 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         height: 1,
                         color: Colors.grey.shade400,
                       ),
-                      ListTile(
-                        leading: Icon(Icons.settings, color: Color(0xFFDA4148)),
-                        title: Text("Ustawienia konta"),
-                        trailing: Icon(Icons.keyboard_arrow_right),
-                        onTap: () {
-                          //change password, emails etc.
-                        },
+                      const ListTile(
+                        leading: Icon(Icons.location_on, color: Color(0xFFDA4148)),
+                        title: Text("Wybierz swój punkt RCKiK"),
+                      ),
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+                        margin: EdgeInsets.fromLTRB(15, 0, 15, 5),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black45, width: 1),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: model.state == ViewState.busy
+                            ? const Center(child: CircularProgressIndicator())
+                            : DropdownButton<LocationsModel>(
+                            isExpanded: true,
+                            items: locations.map((LocationsModel location) {
+                              return DropdownMenuItem<LocationsModel>(
+                                value: location,
+                                child: Text(location.name,
+                                  style: const TextStyle(
+                                      color: Colors.black, fontSize: 16),
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: (LocationsModel? value) {
+                              setState(() {
+                                _selectedLocation = value;
+                              });
+                            },
+                            value: _selectedLocation,
+                          ),
                       ),
                     ],
                   )),
@@ -181,7 +192,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               const SizedBox(height: 30),
               logoutButton,
             ]),
-      ),
+    ),
     );
   }
 }
